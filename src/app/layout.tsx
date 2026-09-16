@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import MotionConfigWrapper from "@/components/motion-config";
 import { siteMeta } from "@/config/portfolio-data";
 import FloatingAvatar from "@/components/floating-avatar";
+import { CursorTrail } from "@/components/ui/cursor-trail";
 
 export const metadata: Metadata = {
   title: siteMeta.title,
@@ -41,6 +42,7 @@ export default function RootLayout({
       >
         <Providers>
           <MotionConfigWrapper>
+            <CursorTrail />
             <FloatingAvatar />
             {children}
           </MotionConfigWrapper>
