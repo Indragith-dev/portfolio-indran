@@ -79,12 +79,22 @@ const SnakeGame = forwardRef<SnakeGameHandle, SnakeGameProps>(
     // ResizeObserver
     useEffect(() => {
       if (!containerRef.current) return;
+      let rafId: number | null = null;
       const ro = new ResizeObserver((entries) => {
         const cr = entries[0].contentRect;
-        setDims({ w: Math.floor(cr.width), h: Math.floor(cr.height) });
+        // Defer to the next frame — ResizeObserver can fire synchronously
+        // during React's render phase, which triggers a "Cannot update a
+        // component while rendering a different component" warning if we
+        // call setState directly here.
+        rafId = requestAnimationFrame(() => {
+          setDims({ w: Math.floor(cr.width), h: Math.floor(cr.height) });
+        });
       });
       ro.observe(containerRef.current);
-      return () => ro.disconnect();
+      return () => {
+        ro.disconnect();
+        if (rafId !== null) cancelAnimationFrame(rafId);
+      };
     }, []);
 
     const placeFood = useCallback(
