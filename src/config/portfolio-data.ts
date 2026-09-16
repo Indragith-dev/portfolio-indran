@@ -28,9 +28,8 @@ export const profile = {
   availableForWork: true,
   /** TODO: drop your CV at public/resume.pdf — the download button expects it. */
   resumeUrl: "/resume.pdf",
-  /** TODO: replace with your own photo in /public and update this path. */
-  avatar: "/profile.svg",
-  asciiArt: "/ascii-art-profile.svg",
+  avatar: "/indran-sketch.jpg",
+  asciiArt: "/indran-sketch.jpg",
   yearsOfExperience: 4,
   location: "Trivandrum, India",
 } as const;
@@ -66,8 +65,8 @@ export const social = {
   email: "you@example.com",
   /** TODO: X/Twitter handle, or remove the link from the footer and home screen. */
   twitter: "https://x.com/",
-  /** TODO: chat link used by the floating robot. */
-  telegram: "https://t.me/",
+  /** Chat link used by the floating robot. */
+  whatsapp: "https://wa.me/919747770467",
   /** TODO */
   discord: "",
 } as const;
@@ -227,28 +226,37 @@ export const techStack = {
  * The GitHub GraphQL API integration was removed, so these are plain numbers
  * you type in yourself.
  *
- * TODO: these are placeholders — open github.com/Indragith-dev and put your
- * real counts in. Every value below feeds the three Stats tabs.
+ * Repos/stars/forks/followers/languages below are pulled from the public
+ * GitHub REST API for Indragith-dev (api.github.com/users/Indragith-dev and
+ * .../repos, language bytes summed per repo).
+ *
+ * TODO: contributions, streaks, best-day commits, PR and issue counts aren't
+ * available from the public REST API — they need GitHub's authenticated
+ * GraphQL API (contributionsCollection). Fill these in from your GitHub
+ * profile's contribution graph, or wire up a GraphQL call with a personal
+ * access token if you want them to stay live.
  */
 export const githubSummary = {
-  joinYear: 2021,
-  totalRepositories: 0,
+  joinYear: 2023,
+  totalRepositories: 15,
   totalStars: 0,
   contributions: 0,
-  followers: 0,
+  followers: 2,
   currentStreak: 0,
   longestStreak: 0,
   bestDayCommits: 0,
-  originalRepos: 0,
+  originalRepos: 15,
   forkedRepos: 0,
   pullRequests: { open: 0, closed: 0, merged: 0 },
   issues: { open: 0, closed: 0 },
   /** Weekly deltas shown as the small green "+n" next to each counter. */
   weeklyTrends: { repositories: 0, stars: 0, contributions: 0, pullRequests: 0 },
   topLanguages: [
-    { name: "TypeScript", color: "#3178c6", percentage: 40 },
-    { name: "C#", color: "#178600", percentage: 35 },
-    { name: "JavaScript", color: "#f1e05a", percentage: 25 },
+    { name: "TypeScript", color: "#3178c6", percentage: 49.4 },
+    { name: "JavaScript", color: "#f1e05a", percentage: 33.4 },
+    { name: "PHP", color: "#4F5D95", percentage: 10.5 },
+    { name: "CSS", color: "#563d7c", percentage: 4.2 },
+    { name: "Java", color: "#b07219", percentage: 1.8 },
   ],
 } as const;
 

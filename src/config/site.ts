@@ -13,5 +13,5 @@ export const siteConfig = {
   linkedin: social.linkedin,
   github: social.github,
   email: social.email,
-  telegram: social.telegram,
+  whatsapp: social.whatsapp,
 };

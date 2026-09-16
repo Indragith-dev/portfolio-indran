@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { Robot } from "@/components/ui/robot";
 import { Eyes } from "@/components/ui/robot-eyes";
 import SpeechBubble from "@/components/ui/speech-bubble";
-import { X, Send } from "lucide-react";
+import { X, MessageCircle } from "lucide-react";
 import { siteConfig } from "@/config/site";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import dynamic from "next/dynamic";
@@ -114,12 +114,12 @@ const FloatingAvatar = () => {
 
                 <div className="flex gap-2">
                   <a
-                    href={siteConfig.telegram}
+                    href={siteConfig.whatsapp}
                     target="_blank"
                     rel="noopener,noreferrer"
-                    className="group flex h-8 flex-1 items-center justify-center gap-2 bg-[#0088cc] font-bold text-white"
+                    className="group flex h-8 flex-1 items-center justify-center gap-2 bg-[#25D366] font-bold text-white"
                   >
-                    <Send className="h-4 w-4" />
+                    <MessageCircle className="h-4 w-4" />
                     <span className="text-xs uppercase">Chat</span>
                   </a>
 
