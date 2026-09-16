@@ -26,8 +26,7 @@ export const profile = {
   tagline:
     "Full Stack Developer with 4+ years building enterprise applications end to end — React and TypeScript on the front, C# and ASP.NET Core on the back, with SQL, Docker and AWS holding it together.",
   availableForWork: true,
-  /** TODO: drop your CV at public/resume.pdf — the download button expects it. */
-  resumeUrl: "/resume.pdf",
+  resumeUrl: "/resume/Indragith_Resume.pdf",
   avatar: "/indran-sketch.jpg",
   asciiArt: "/indran-sketch.jpg",
   yearsOfExperience: 4,
@@ -63,8 +62,6 @@ export const social = {
   linkedin: "https://www.linkedin.com/in/nsindragith",
   /** TODO: your email — the contact form opens a mailto: to this address. */
   email: "you@example.com",
-  /** TODO: X/Twitter handle, or remove the link from the footer and home screen. */
-  twitter: "https://x.com/",
   /** Chat link used by the floating robot. */
   whatsapp: "https://wa.me/919747770467",
   /** TODO */
@@ -364,20 +361,13 @@ export const testimonials = [
 
 /**
  * The playlist used to be fetched from /data/playlist.json — it is a plain
- * import now. TODO: point `url` at your own tracks, or at any audio file
- * you drop in /public.
+ * import now.
  */
 export const playlist: Song[] = [
   {
-    url: "/sfx/snake-background.mp3",
+    url: "/music/Sunflower.mp3",
     cover: "/data/track-cover.svg",
-    title: "Placeholder Track One",
-    channel: "Add your own",
-  },
-  {
-    url: "/sfx/snake-background.mp3",
-    cover: "/data/track-cover.svg",
-    title: "Placeholder Track Two",
-    channel: "Add your own",
+    title: "Sunflower",
+    channel: "Post Malone, Swae Lee",
   },
 ];

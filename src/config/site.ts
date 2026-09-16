@@ -9,7 +9,6 @@ export const siteConfig = {
   description: siteMeta.description,
   url: siteMeta.url,
   name: profile.name,
-  twitter: social.twitter,
   linkedin: social.linkedin,
   github: social.github,
   email: social.email,

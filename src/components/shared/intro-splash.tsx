@@ -22,7 +22,7 @@ export const IntroSplash = () => {
       transition={{ duration: 0.6 }}
     >
       <BackgroundAnimation
-        color={resolvedTheme === "light" ? "blue" : "ember"}
+        color={resolvedTheme === "light" ? "purple" : "ember"}
       />
 
       <motion.div

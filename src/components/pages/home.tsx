@@ -4,7 +4,7 @@ import { siteConfig } from "@/config/site";
 import useScreenSize from "@/hooks/use-screen-size";
 import type { Song } from "@/types";
 import { useIsClient } from "@uidotdev/usehooks";
-import { Mail, Twitter, Linkedin, Github } from "lucide-react";
+import { Mail, Linkedin, Github } from "lucide-react";
 import { AnimatePresence, motion, Variants } from "motion/react";
 import { useTheme } from "next-themes";
 import dynamic from "next/dynamic";
@@ -117,7 +117,6 @@ const slideInBottom: Variants = {
 const socialLinks = [
   { icon: Github, label: "Github", link: siteConfig.github },
   { icon: Mail, label: "Email", link: `mailto:${siteConfig.email}` },
-  { icon: Twitter, label: "Twitter", link: siteConfig.twitter },
   { icon: Linkedin, label: "LinkedIn", link: siteConfig.linkedin },
 ];
 
@@ -354,7 +353,10 @@ const HomePage = () => {
             // setCurrentConsoleNavigation("portfolio")
           },
           resume: () => {
-            window.open(profile.resumeUrl, "_blank");
+            const a = document.createElement("a");
+            a.href = profile.resumeUrl;
+            a.download = "";
+            a.click();
           },
         };
 

@@ -8,7 +8,6 @@ import { heroStats, profile } from "@/config/portfolio-data";
 import { cn } from "@/lib/utils";
 import { ArrowDownSquareIcon, ArrowUpRight, Download } from "lucide-react";
 import { motion } from "motion/react";
-import Link from "next/link";
 
 const Hero = () => {
   return (
@@ -108,10 +107,10 @@ const Hero = () => {
                 size="lg"
                 className="group/btn border-2 font-medium"
               >
-                <Link href={profile.resumeUrl}>
+                <a href={profile.resumeUrl} download>
                   <Download className="size-4 transition-transform group-hover/btn:translate-y-0.5" />
                   Download resume
-                </Link>
+                </a>
               </Button>
             </motion.div>
           </div>

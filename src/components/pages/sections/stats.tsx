@@ -174,6 +174,9 @@ const OverviewContent = ({ data }: { data?: GitHubStatsResponse }) => {
     },
   ];
 
+  const visibleLanguages = data?.topLanguages?.slice(0, 3) ?? [];
+  const hiddenLanguageCount = (data?.topLanguages?.length ?? 0) - visibleLanguages.length;
+
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
@@ -337,8 +340,8 @@ const OverviewContent = ({ data }: { data?: GitHubStatsResponse }) => {
             </div>
 
             <div className="space-y-3">
-              {(data?.topLanguages?.length ?? 0) > 0 ? (
-                data?.topLanguages?.map((lang, i) => (
+              {visibleLanguages.length > 0 ? (
+                visibleLanguages.map((lang, i) => (
                   <div key={lang.name} className="space-y-1">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
@@ -366,6 +369,12 @@ const OverviewContent = ({ data }: { data?: GitHubStatsResponse }) => {
               ) : (
                 <p className="text-muted-foreground text-sm">
                   No language data available
+                </p>
+              )}
+
+              {hiddenLanguageCount > 0 && (
+                <p className="text-muted-foreground text-xs">
+                  +{hiddenLanguageCount} more
                 </p>
               )}
             </div>
