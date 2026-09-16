@@ -198,14 +198,12 @@ export const techStack = {
     { name: "EF Core", icon: "/icons/efcore.svg" },
     { name: "RabbitMQ", icon: "/icons/rabbitmq.svg" },
     { name: "Node.js", icon: "/icons/nodejs.svg" },
-  ],
-  Databases: [
     { name: "SQL Server", icon: "/icons/sqlserver.svg" },
     { name: "PostgreSQL", icon: "/icons/postgresql.svg" },
     { name: "MySQL", icon: "/icons/mysql.svg" },
     { name: "MongoDB", icon: "/icons/mongodb.svg" },
   ],
-  "Cloud & Tools": [
+  Tools: [
     { name: "AWS", icon: "/icons/aws.svg" },
     { name: "Docker", icon: "/icons/docker.svg" },
     { name: "GitHub Actions", icon: "/icons/github-actions.svg" },
