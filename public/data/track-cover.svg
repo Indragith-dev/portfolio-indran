@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="300" height="300" role="img" aria-label="Album cover placeholder">
+  <rect width="300" height="300" fill="#2a2a34"/>
+  <circle cx="150" cy="150" r="92" fill="#16161c"/>
+  <circle cx="150" cy="150" r="58" fill="#2a2a34"/>
+  <circle cx="150" cy="150" r="14" fill="#f6eac5"/>
+  <text x="150" y="272" text-anchor="middle" font-family="monospace" font-size="16" fill="#6a6a78">cover art</text>
+</svg>
