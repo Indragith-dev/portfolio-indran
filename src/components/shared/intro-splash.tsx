@@ -1,11 +1,18 @@
 "use client";
 import { motion } from "motion/react";
+import { useCallback, useState } from "react";
 import BackgroundAnimation from "@/components/ui/background-gradient";
 import { Logo } from "../ui/logo";
 import { useTheme } from "next-themes";
 
 export const IntroSplash = () => {
   const { resolvedTheme } = useTheme();
+  const [daisyLoaded, setDaisyLoaded] = useState(false);
+  const [logoDrawn, setLogoDrawn] = useState(false);
+  const daisyRef = useCallback((node: HTMLImageElement | null) => {
+    if (node?.complete) setDaisyLoaded(true);
+  }, []);
+  const daisyReady = daisyLoaded && logoDrawn;
 
   return (
     <motion.div
@@ -19,12 +26,33 @@ export const IntroSplash = () => {
       />
 
       <motion.div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white"
+        className="absolute top-1/2 left-1/2 flex -translate-x-1/2 -translate-y-1/2 items-end gap-3 text-white"
         initial={{ opacity: 0, y: 24, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
       >
-        <Logo className="w-28 sm:w-32 md:w-40 @max-md:w-16" />
+        <Logo
+          className="w-40 sm:w-48 md:w-64 @max-md:w-24"
+          onAnimationEnd={() => setLogoDrawn(true)}
+        />
+
+        <motion.img
+          ref={daisyRef}
+          src="/daisy-indran.png"
+          alt=""
+          onLoad={() => setDaisyLoaded(true)}
+          initial={{ opacity: 0, y: 14, rotate: 0 }}
+          animate={
+            daisyReady
+              ? { opacity: 1, y: 14, rotate: 720 }
+              : { opacity: 0, y: 14, rotate: 0 }
+          }
+          transition={{
+            opacity: { duration: 0.4, ease: "easeOut" },
+            rotate: { duration: 1.6, ease: "easeOut" },
+          }}
+          className="w-16 self-end sm:w-20 md:w-24"
+        />
       </motion.div>
 
       <motion.div className="pointer-events-none absolute bottom-10 left-1/2 flex -translate-x-1/2 flex-col items-center justify-center gap-2 font-semibold text-white @max-md:hidden">
