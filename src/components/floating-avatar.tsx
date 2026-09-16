@@ -13,40 +13,72 @@ import dynamic from "next/dynamic";
 
 const FloatingAvatar = () => {
   const pathname = usePathname();
-  const [isVisible, setIsVisible] = useState(false);
-  const [isDismissed, setIsDismissed] = useLocalStorage(
-    "floating_avatar_dismissed",
+  const [hasScrolledPast, setHasScrolledPast] = useState(false);
+  const [isMinimized, setIsMinimized] = useLocalStorage(
+    "floating_avatar_minimized",
     false,
   );
 
   useEffect(() => {
     if (!pathname.startsWith("/portfolio")) {
-      setIsVisible(false);
+      setHasScrolledPast(false);
       return;
     }
     const el = document.querySelector(".portfolio-container");
     const handleScroll = () => {
       const scrolled = el?.scrollTop ?? 0;
 
-      if (!isVisible) {
-        setIsVisible(scrolled > window.innerHeight * 2 && !isDismissed);
+      if (!hasScrolledPast) {
+        setHasScrolledPast(scrolled > window.innerHeight * 2);
       }
     };
 
     el?.addEventListener("scroll", handleScroll);
     handleScroll();
     return () => el?.removeEventListener("scroll", handleScroll);
-  }, [isDismissed, pathname, isVisible]);
+  }, [pathname, hasScrolledPast]);
 
-  const handleDismiss = () => {
-    setIsDismissed(true);
-    setIsVisible(false);
-  };
+  const isVisible = pathname.startsWith("/portfolio") && hasScrolledPast;
+
+  const handleMinimize = () => setIsMinimized(true);
+  const handleExpand = () => setIsMinimized(false);
+
+  if (!isVisible) return null;
 
   return (
-    <AnimatePresence>
-      {isVisible && (
-        <motion.div className="fixed bottom-36 -left-40 z-50 sm:-left-46 md:-left-58">
+    <AnimatePresence mode="wait">
+      {isMinimized ? (
+        <motion.button
+          key="peek"
+          onClick={handleExpand}
+          initial={{ x: -80, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          exit={{ x: -80, opacity: 0 }}
+          whileHover={{ x: 20 }}
+          whileTap={{ scale: 0.95 }}
+          transition={{ type: "spring", stiffness: 200, damping: 20 }}
+          className="fixed bottom-36 left-0 z-50 flex h-16 w-12 -translate-x-5 items-center justify-center rounded-r-2xl border border-white/20 bg-[#1a1a1a] shadow-[0_0_24px_rgba(255,255,255,0.15)] sm:h-20 sm:w-14 sm:-translate-x-6"
+          aria-label="Open chat"
+        >
+          <Eyes
+            size="sm"
+            eyeColor="#fff"
+            lookAround={{
+              enabled: true,
+              duration: 6,
+            }}
+            glow={{
+              level: 2,
+              color: "#fff",
+              animated: true,
+            }}
+          />
+        </motion.button>
+      ) : (
+        <motion.div
+          key="full"
+          className="fixed bottom-36 -left-40 z-50 sm:-left-46 md:-left-58"
+        >
           <div className="relative flex items-end gap-4">
             {/* Robot  */}
             <motion.div
@@ -124,7 +156,7 @@ const FloatingAvatar = () => {
                   </a>
 
                   <motion.button
-                    onClick={handleDismiss}
+                    onClick={handleMinimize}
                     whileTap={{ scale: 0.95 }}
                     className="flex size-8 items-center justify-center bg-red-500 p-2 font-bold text-white transition-all hover:bg-red-600"
                     aria-label="Close"
