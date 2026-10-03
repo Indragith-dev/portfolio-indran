@@ -59,6 +59,7 @@ const TAB_CONTENT = [
 const TechStackCard = () => {
   return (
     <motion.div
+      id="tech-stack"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.5, duration: 0.6, ease: "easeOut" }}
@@ -96,6 +97,7 @@ const TechStackCard = () => {
                     key={tech.name}
                     className="group relative flex h-14 w-14 items-center justify-center rounded-md transition-transform duration-300 hover:scale-110"
                     aria-label={tech.name}
+                    data-skill={tech.name}
                   >
                     <img
                       src={tech.icon}

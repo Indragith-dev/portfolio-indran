@@ -7,6 +7,7 @@ import MotionConfigWrapper from "@/components/motion-config";
 import { siteMeta } from "@/config/portfolio-data";
 import FloatingAvatar from "@/components/floating-avatar";
 import { CursorTrail } from "@/components/ui/cursor-trail";
+import AiraChat from "@/components/aira-chat";
 
 export const metadata: Metadata = {
   title: siteMeta.title,
@@ -44,6 +45,7 @@ export default function RootLayout({
           <MotionConfigWrapper>
             <CursorTrail />
             <FloatingAvatar />
+            <AiraChat />
             {children}
           </MotionConfigWrapper>
         </Providers>

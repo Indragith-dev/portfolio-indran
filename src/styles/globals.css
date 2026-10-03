@@ -237,3 +237,21 @@
       60% 50%;
   }
 }
+
+/* AIRA: briefly marks the project or skill it is talking about. */
+[data-aira-highlight] {
+  outline: 2px solid var(--primary);
+  outline-offset: -2px;
+  animation: aira-highlight 0.8s ease-in-out 3 alternate;
+}
+
+[data-aira-highlight] img {
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+@keyframes aira-highlight {
+  to {
+    outline-color: transparent;
+  }
+}

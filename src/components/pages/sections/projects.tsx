@@ -17,11 +17,12 @@ const Projects = () => {
         {projects.map((project, index) => (
           <motion.div
             key={project.title}
+            data-project-id={project.id}
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: index * 0.1 }}
             viewport={{ once: true }}
-            className="group relative"
+            className="group relative scroll-mt-4"
           >
             <div className="grid lg:grid-cols-2">
               {/* Image Side  */}
