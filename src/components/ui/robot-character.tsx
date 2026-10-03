@@ -310,20 +310,15 @@ function Expression({ state }: { state: RobotState }) {
       );
 
     case "sad":
-      // Droopy eyes looking down, a tear and a little frown.
+      // Droopy eyes looking down and a little frown.
       return (
         <motion.div
-          className="relative flex flex-col items-center"
+          className="flex flex-col items-center"
           initial={{ y: 0 }}
           animate={{ y: 5 }}
           transition={{ duration: 0.3 }}
         >
           <Eyes {...EYES} shape="sleepy" />
-          <motion.span
-            className="absolute top-3 left-1 h-2.5 w-1.5 rounded-b-full rounded-t-[40%] bg-sky-200 shadow-[0_0_4px_#bae6fd]"
-            animate={{ y: [0, 14], opacity: [0, 1, 0] }}
-            transition={loop(1.1, { ease: "easeIn" })}
-          />
           <svg viewBox="0 0 24 10" className="mt-2 h-2.5 w-6 overflow-visible">
             <path
               d="M3 8 Q12 0 21 8"
