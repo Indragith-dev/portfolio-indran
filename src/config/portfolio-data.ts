@@ -130,6 +130,8 @@ export const aboutBadges = [
 
 export const projects = [
   {
+    /** AIRA scrolls to a project by this id (see src/lib/aira.ts). */
+    id: "dms",
     title: "Document Management System",
     description:
       "Enterprise DMS pairing a React vendor portal with a SharePoint internal portal over an ASP.NET Core and SQL Server backend. Multi-stage document review and approval workflows, JWT authentication and Hangfire background jobs. Deployed on-site into an air-gapped environment in Abu Dhabi.",
@@ -142,6 +144,7 @@ export const projects = [
     status: "completed",
   },
   {
+    id: "isop",
     title: "ISOP — Integrated Strategy & Operations Platform",
     description:
       "Multi-tenant modular monolith on .NET 9 with CQRS and event-driven messaging over RabbitMQ and Wolverine. I own the Project Management module — meetings, phases, risks, issues and vendors — and build Task Management features across workspaces, dashboards and tasks.",
@@ -153,6 +156,7 @@ export const projects = [
     status: "in progress",
   },
   {
+    id: "hrms",
     title: "Employee Portal & HRMS",
     description:
       "A production employee platform delivered as both a React web app and a Flutter mobile app — responsive employee portal, activity feeds, real-time messaging and an AI chatbot, with BLoC state management, Hive local storage and go_router on mobile.",
