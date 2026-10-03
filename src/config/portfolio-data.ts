@@ -60,9 +60,9 @@ export const social = {
   githubUsername: "Indragith-dev",
   github: "https://github.com/Indragith-dev",
   linkedin: "https://www.linkedin.com/in/nsindragith",
-  /** TODO: your email — the contact form opens a mailto: to this address. */
-  email: "you@example.com",
-  /** Chat link used by the floating robot. */
+  /** Shown as the Mail link in the footer. */
+  email: "nsindragith@gmail.com",
+  /** WhatsApp chat link, shown in the footer. */
   whatsapp: "https://wa.me/919747770467",
   /** TODO */
   discord: "",

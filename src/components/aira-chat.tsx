@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 import { MessageCircle, Send, X } from "lucide-react";
 import { useAira, type AiraMessage } from "@/hooks/use-aira";
+import { useSoundCustom } from "@/hooks/use-sound-custom";
 import { handleAiraAction, type AiraAction } from "@/lib/aira";
 import { cn } from "@/lib/utils";
 import { RobotCharacter, type RobotState } from "@/components/ui/robot-character";
@@ -17,68 +18,141 @@ const SUGGESTIONS = [
 ];
 
 const BUBBLE_KEY = "aira_bubble_dismissed";
-const BUBBLE_DELAY_MS = 1500;
+const BUBBLE_DELAY_MS = 1200;
 const WALK_MS = 1100;
+/** Walking back is slower: it's sad to go. */
+const LEAVE_MS = 1700;
 const GREETING_MS = 2200;
 const SUCCESS_MS = 1200;
+const SURPRISE_MS = 600;
+/** Minimum gap between hover sounds, so sweeping the mouse doesn't spam it. */
+const HOVER_SOUND_COOLDOWN_MS = 2000;
+/** How far past the intro splash (in viewport heights) before AIRA shows up. */
+const SHOW_AFTER_SCREENS = 0.6;
 
 /**
+ * hidden: off-screen while the portfolio intro is showing.
  * peek: leaning out from behind the right edge, waving with a speech bubble.
  * arriving / leaving: walking between the corner and its spot under the chat.
  * open: chat panel shown above the robot.
  */
-type Phase = "peek" | "arriving" | "open" | "leaving";
+type Phase = "hidden" | "peek" | "arriving" | "open" | "leaving";
 
-/** Where the robot stands, as a share of its own width (it is pinned to the right edge). */
-const PEEK = { x: "30%", rotate: -22 };
-const STAND = { x: "-18%", rotate: 0 };
+/**
+ * Poses for the robot button, which is pinned to the right edge (x is a
+ * share of its own width). PEEK is enlarged, mostly behind the edge and
+ * tilted so only the head and arms lean into view.
+ */
+const HIDDEN = { x: "260%", rotate: -32, scale: 1.8 };
+const PEEK = { x: "120%", rotate: -32, scale: 1.8 };
+const STAND = { x: "-18%", rotate: 0, scale: 1 };
 
-/** AIRA chat: a robot peeking from the bottom-right that walks out when clicked. */
+const POSE: Record<Phase, typeof PEEK> = {
+  hidden: HIDDEN,
+  peek: PEEK,
+  leaving: PEEK,
+  arriving: STAND,
+  open: STAND,
+};
+
+/**
+ * AIRA chat for the portfolio page: a robot that peeks in from the
+ * bottom-right once the intro is scrolled past, and walks out when clicked.
+ */
 export default function AiraChat({
   onAction = handleAiraAction,
 }: {
   onAction?: (action: AiraAction) => void;
 }) {
   const pathname = usePathname();
+  const onPortfolio = pathname.startsWith("/portfolio");
   const { messages, loading, send } = useAira(onAction);
-  const [phase, setPhase] = useState<Phase>("peek");
+  const [phase, setPhase] = useState<Phase>("hidden");
   const [input, setInput] = useState("");
   const [showBubble, setShowBubble] = useState(false);
   // Short reactions that play on top of the chat-driven states.
-  const [reaction, setReaction] = useState<"greeting" | "success" | null>(null);
+  const [reaction, setReaction] = useState<"greeting" | "success" | "surprised" | null>(null);
   const reactionTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
   const wasLoading = useRef(false);
+  const prevPhase = useRef<Phase>("hidden");
+  const lastHoverSound = useRef(0);
   const listRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const inputId = useId();
   const panelId = useId();
 
-  const open = phase === "open";
-  // The home page has its own buttons in the bottom-right corner.
-  const isHome = pathname === "/";
+  // Muted by the navbar's sound toggle, like the site's other sounds.
+  const [playRobo] = useSoundCustom("/robo/robo_sound.mp3", { volume: 0.5 });
+  const [playWalk, { stop: stopWalk }] = useSoundCustom(
+    "/robo/robo_walk_sound.mp3",
+    { volume: 0.5 },
+  );
+  // play/stop change identity once the files load; read them through a ref so
+  // the phase effect below only reacts to phase changes.
+  const sounds = useRef({ playRobo, playWalk, stopWalk });
+  sounds.current = { playRobo, playWalk, stopWalk };
 
-  // Say hi once per visit, unless the bubble was dismissed in this tab.
+  const open = phase === "open";
+  const walking = phase === "arriving" || phase === "leaving";
+  const walkMs = phase === "leaving" ? LEAVE_MS : WALK_MS;
+
+  // Stay off-screen during the intro splash; peek in once the page starts.
   useEffect(() => {
-    let dismissed = false;
-    try {
-      dismissed = sessionStorage.getItem(BUBBLE_KEY) === "1";
-    } catch {}
-    if (dismissed) return;
-    const t = setTimeout(() => setShowBubble(true), BUBBLE_DELAY_MS);
-    return () => clearTimeout(t);
-  }, []);
+    if (!onPortfolio) return;
+    const el = document.querySelector<HTMLElement>(".portfolio-container");
+    if (!el) return;
+
+    const onScroll = () => {
+      const pastIntro = el.scrollTop > window.innerHeight * SHOW_AFTER_SCREENS;
+      setPhase((p) =>
+        pastIntro && p === "hidden" ? "peek" : !pastIntro && p === "peek" ? "hidden" : p,
+      );
+    };
+
+    el.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => el.removeEventListener("scroll", onScroll);
+  }, [onPortfolio]);
+
+  // Sounds and the speech bubble follow phase changes.
+  useEffect(() => {
+    const prev = prevPhase.current;
+    prevPhase.current = phase;
+    if (prev === phase) return;
+    const { playRobo, playWalk, stopWalk } = sounds.current;
+
+    if (prev === "arriving" || prev === "leaving") stopWalk();
+
+    if (phase === "peek" && prev === "hidden") {
+      playRobo();
+      let dismissed = false;
+      try {
+        dismissed = sessionStorage.getItem(BUBBLE_KEY) === "1";
+      } catch {}
+      if (!dismissed) {
+        const t = setTimeout(() => setShowBubble(true), BUBBLE_DELAY_MS);
+        return () => clearTimeout(t);
+      }
+    }
+    if (phase === "hidden") setShowBubble(false);
+    if (phase === "arriving") playWalk();
+    if (phase === "leaving") {
+      playRobo();
+      playWalk();
+    }
+  }, [phase]);
 
   // Walk in, then open the chat; walk out, then peek again.
   useEffect(() => {
-    if (phase !== "arriving" && phase !== "leaving") return;
+    if (!walking) return;
     const t = setTimeout(
       () => setPhase(phase === "arriving" ? "open" : "peek"),
-      WALK_MS,
+      walkMs,
     );
     return () => clearTimeout(t);
-  }, [phase]);
+  }, [phase, walking, walkMs]);
 
-  const react = (kind: "greeting" | "success", ms: number) => {
+  const react = (kind: "greeting" | "success" | "surprised", ms: number) => {
     clearTimeout(reactionTimer.current);
     setReaction(kind);
     reactionTimer.current = setTimeout(() => setReaction(null), ms);
@@ -121,6 +195,18 @@ export default function AiraChat({
     } catch {}
   };
 
+  /** Hovering the peeking robot says hi again. */
+  const sayHi = () => {
+    if (phase !== "peek") return;
+    if (!showBubble) react("surprised", SURPRISE_MS);
+    setShowBubble(true);
+    const now = Date.now();
+    if (now - lastHoverSound.current > HOVER_SOUND_COOLDOWN_MS) {
+      lastHoverSound.current = now;
+      playRobo();
+    }
+  };
+
   const openChat = () => {
     hideBubble();
     setPhase((p) => (p === "peek" ? "arriving" : p));
@@ -137,28 +223,24 @@ export default function AiraChat({
   const last = messages[messages.length - 1];
   const waiting = loading && last.role === "assistant" && !last.content;
   const showSuggestions = messages.length === 1 && !loading;
-  const walking = phase === "arriving" || phase === "leaving";
 
-  /** Single source of the robot's state; hook sounds to this later. */
+  /** Single source of the robot's animation state. */
   const robotState: RobotState = walking
-    ? "walking"
+    ? phase === "leaving"
+      ? "sad"
+      : "walking"
     : phase === "peek"
-      ? showBubble
-        ? "greeting"
-        : "idle"
+      ? (reaction ?? (showBubble ? "greeting" : "idle"))
       : waiting
         ? "thinking"
         : loading
           ? "talking"
           : (reaction ?? "idle");
 
+  if (!onPortfolio) return null;
+
   return (
-    <div
-      className={cn(
-        "pointer-events-none fixed right-0 z-[60] flex flex-col items-end",
-        isHome ? "bottom-16 md:bottom-20" : "bottom-2 md:bottom-4",
-      )}
-    >
+    <div className="pointer-events-none fixed right-0 bottom-2 z-[60] flex flex-col items-end md:bottom-4">
       <AnimatePresence>
         {open && (
           <motion.div
@@ -170,13 +252,13 @@ export default function AiraChat({
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.96 }}
             transition={{ type: "spring", stiffness: 320, damping: 28 }}
-            className="bg-background/95 pointer-events-auto mr-4 mb-1 flex h-[min(520px,calc(100dvh-10rem))] w-[min(360px,calc(100vw-32px))] origin-bottom-right flex-col overflow-hidden rounded-xl border-2 shadow-2xl backdrop-blur-md"
+            className="bg-background/95 pointer-events-auto mr-2 mb-1 flex md:mr-3 h-[min(520px,calc(100dvh-10rem))] w-[min(360px,calc(100vw-32px))] origin-bottom-right flex-col overflow-hidden rounded-xl border-2 shadow-2xl backdrop-blur-md"
           >
             {/* Header */}
             <div className="bg-muted/40 flex items-center gap-3 border-b px-4 py-3">
               <RobotCharacter
                 state={robotState}
-                className="size-9 shrink-0 drop-shadow-[0_0_6px_rgba(255,255,255,0.3)]"
+                className="size-9 shrink-0"
               />
               <div className="min-w-0 flex-1">
                 <p className="font-mono text-sm font-bold tracking-wider">
@@ -184,7 +266,7 @@ export default function AiraChat({
                 </p>
                 <p className="text-muted-foreground flex items-center gap-1.5 text-xs">
                   <span className="size-1.5 animate-pulse rounded-full bg-green-500" />
-                  Indran&apos;s AI assistant
+                  AI assistant
                 </p>
               </div>
               <button
@@ -201,7 +283,7 @@ export default function AiraChat({
             <div
               ref={listRef}
               aria-live="polite"
-              className="flex-1 space-y-3 overflow-y-auto overscroll-contain px-4 py-4"
+              className="no-scrollbar flex-1 space-y-3 overflow-y-auto overscroll-contain px-4 py-4"
             >
               {messages.map((m, i) =>
                 m.role === "assistant" && !m.content ? null : (
@@ -279,7 +361,15 @@ export default function AiraChat({
         )}
       </AnimatePresence>
 
-      <div className="relative">
+      {/* Peeking sits a bit higher than standing, more so on desktop. */}
+      <div
+        style={{ transitionDuration: `${walkMs}ms` }}
+        className={cn(
+          "relative transition-transform ease-in-out",
+          (phase === "hidden" || phase === "peek" || phase === "leaving") &&
+            "-translate-y-4 md:-translate-y-32",
+        )}
+      >
         <AnimatePresence>
           {showBubble && phase === "peek" && (
             <motion.div
@@ -288,7 +378,7 @@ export default function AiraChat({
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 10, scale: 0.9 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              className="pointer-events-auto absolute right-[65%] bottom-[85%] origin-bottom-right"
+              className="pointer-events-auto absolute right-[5rem] bottom-[2rem] z-10 origin-bottom-right md:right-[5.5rem] md:bottom-[5rem]"
             >
               <SpeechBubble
                 direction="right"
@@ -328,27 +418,30 @@ export default function AiraChat({
         <motion.button
           type="button"
           onClick={toggle}
-          disabled={walking}
+          // Say hi again whenever the visitor hovers the peeking robot.
+          onMouseEnter={sayHi}
+          disabled={walking || phase === "hidden"}
           aria-label={open ? "Close AIRA chat" : "Open AIRA chat"}
           aria-expanded={open}
           aria-controls={panelId}
-          initial={PEEK}
-          animate={phase === "peek" || phase === "leaving" ? PEEK : STAND}
+          initial={HIDDEN}
+          animate={POSE[phase]}
           transition={{
-            x: { duration: WALK_MS / 1000, ease: "easeInOut" },
+            x: { duration: walkMs / 1000, ease: "easeInOut" },
+            scale: { duration: walkMs / 1000, ease: "easeInOut" },
             // Straighten up before walking out; lean back in after walking home.
             rotate: {
               duration: 0.35,
-              delay: phase === "leaving" ? WALK_MS / 1000 - 0.35 : 0,
+              delay: phase === "leaving" ? walkMs / 1000 - 0.35 : 0,
             },
           }}
           style={{ transformOrigin: "bottom right" }}
-          className="pointer-events-auto block size-20 md:size-28"
+          className="pointer-events-auto block size-20 cursor-grab md:size-28"
         >
           <RobotCharacter
             state={robotState}
             // Mirrored so the waving arm is on the side facing the page.
-            className="size-full -scale-x-100 drop-shadow-[0_0_10px_rgba(255,255,255,0.25)]"
+            className="size-full -scale-x-100"
           />
         </motion.button>
       </div>

@@ -27,10 +27,8 @@ export default function Contact() {
   );
   const [error, setError] = useState("");
 
-  const canSend =
-    EMAIL_RE.test(email.trim()) &&
-    name.trim().length > 0 &&
-    message.trim().length >= MIN_MESSAGE;
+  // Enabled as soon as there is a message; onSubmit explains anything missing.
+  const canSend = message.trim().length > 0;
 
   const fail = (text: string) => {
     setError(text);
@@ -101,14 +99,19 @@ export default function Contact() {
       <div className="relative z-10 mx-auto max-w-5xl">
         <div className="">
           <form onSubmit={onSubmit} className="w-full">
-            {/* Honeypot: hidden from people and screen readers, must stay empty. */}
+            {/* Honeypot: hidden from people and screen readers, must stay empty.
+                Its name is deliberately meaningless so browser autofill and
+                password managers leave it alone (it is sent as `website`). */}
             <input
               type="text"
-              name="website"
+              name="aira_hp_7f3"
               value={website}
               onChange={(e) => setWebsite(e.target.value)}
               tabIndex={-1}
               autoComplete="off"
+              data-1p-ignore
+              data-lpignore="true"
+              data-form-type="other"
               aria-hidden="true"
               className="absolute -left-[9999px] size-px opacity-0"
             />

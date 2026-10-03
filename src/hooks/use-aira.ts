@@ -6,7 +6,7 @@ export type AiraMessage = { role: "user" | "assistant"; content: string };
 const GREETING: AiraMessage = {
   role: "assistant",
   content:
-    "Hi, I'm AIRA, Indran's AI assistant. Ask me about his projects, skills or experience.",
+    "Hi, I'm AIRA, an AI assistant. Ask me about Indran's projects, skills or experience.",
 };
 
 /**

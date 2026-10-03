@@ -5,7 +5,6 @@ import { geistMono, geistSans, incognito, pixelifySans } from "@/assets/fonts";
 import { cn } from "@/lib/utils";
 import MotionConfigWrapper from "@/components/motion-config";
 import { siteMeta } from "@/config/portfolio-data";
-import FloatingAvatar from "@/components/floating-avatar";
 import { CursorTrail } from "@/components/ui/cursor-trail";
 import AiraChat from "@/components/aira-chat";
 
@@ -44,7 +43,6 @@ export default function RootLayout({
         <Providers>
           <MotionConfigWrapper>
             <CursorTrail />
-            <FloatingAvatar />
             <AiraChat />
             {children}
           </MotionConfigWrapper>
