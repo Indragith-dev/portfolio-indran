@@ -683,11 +683,11 @@ export const colleagues: {
   photo?: string;
 }[] = [
   {
-    name: "Ajesh Anand",
-    role: "Manager",
-    company: "MAV-S Innovations",
+    name: "Krishnadev K R",
+    role: "Digital Marketing Expert",
+    company: "K2web Solutions",
     quote:
-      "Indragith takes ownership from requirements to production. When we needed our document management platform set up inside a secure, air-gapped data centre in Abu Dhabi, he went on-site and handled the whole deployment on his own. Dependable, calm under pressure, and a well-deserved High Achiever.",
+      "At K2web, Indragith built responsive, cross-browser websites for our clients that looked great and loaded fast. He was reliable with deadlines and easy to collaborate with across teams.",
   },
   {
     name: "Aswathi V",
@@ -732,12 +732,13 @@ export const colleagues: {
       "Indragith turns designs into interfaces that match the intent, not just the pixels. He respects the details, raises usability concerns early, and makes the design-to-development handoff smooth.",
   },
   {
-    name: "Krishnadev K R",
-    role: "Digital Marketing Expert",
-    company: "K2web Solutions",
+    name: "Ajesh Anand",
+    role: "Manager",
+    company: "MAV-S Innovations",
     quote:
-      "At K2web, Indragith built responsive, cross-browser websites for our clients that looked great and loaded fast. He was reliable with deadlines and easy to collaborate with across teams.",
+      "Indragith takes ownership from requirements to production. When we needed our document management platform set up inside a secure, air-gapped data centre in Abu Dhabi, he went on-site and handled the whole deployment on his own. Dependable, calm under pressure, and a well-deserved High Achiever.",
   },
+
   {
     name: "Salman Remli",
     role: "Junior Frontend Developer",
