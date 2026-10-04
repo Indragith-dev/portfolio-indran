@@ -40,7 +40,7 @@ export default function ProjectDetail({
       <main className="before:border-border after:border-border relative z-10 min-h-screen before:absolute before:top-0 before:left-0 before:h-full before:w-12 before:border-r before:bg-[linear-gradient(-135deg,_var(--color-border)_25%,_transparent_25%,_transparent_50%,_var(--color-border)_50%,_var(--color-border)_75%,_transparent_75%,_transparent)] before:bg-[length:5px_5px] after:absolute after:top-0 after:right-0 after:h-full after:w-12 after:border-l after:bg-[linear-gradient(135deg,_var(--color-border)_25%,_transparent_25%,_transparent_50%,_var(--color-border)_50%,_var(--color-border)_75%,_transparent_75%,_transparent)] after:bg-[length:5px_5px] max-md:before:hidden max-md:after:hidden md:px-12">
         {/* Top bar */}
         <nav className="flex items-center justify-between border-b px-4 py-2.5 md:px-8">
-          <Link href="/portfolio" aria-label="Back to portfolio">
+          <Link href="/" aria-label="Go to home">
             <Logo className="w-14" hover />
           </Link>
           <Button asChild variant="outline" size="sm" className="group border-2 font-mono text-xs">

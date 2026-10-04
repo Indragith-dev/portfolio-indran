@@ -9,6 +9,7 @@ import { useTheme } from "next-themes";
 import { motion, AnimatePresence } from "motion/react";
 import { siteConfig } from "@/config/site";
 import { useIsSoundEnabled } from "@/store/use-sound-enabled";
+import Link from "next/link";
 
 const NAV_LINKS = [
   { id: "home", label: "Home" },
@@ -86,16 +87,16 @@ const Navbar = () => {
   return (
     <nav className="w-full border-b px-4 py-2.5 md:px-8" id="home">
       <div className="flex items-center justify-between gap-4">
-        {/* Logo */}
-        <a
-          href="#home"
+        {/* Logo: back to the console home page */}
+        <Link
+          href="/"
+          aria-label="Go to home"
           className="group relative inline-flex items-center"
-          onClick={() => handleNavClick("home")}
         >
           <div className="absolute -top-2 -left-2 h-4 w-4 border-t-2 border-l-2 duration-200 group-hover:-top-1 group-hover:-left-1" />
           <Logo className="w-14" hover />
           <div className="absolute -right-2 -bottom-2 h-4 w-4 border-r-2 border-b-2 duration-200 group-hover:-right-1 group-hover:-bottom-1" />
-        </a>
+        </Link>
 
         {/* Desktop Nav */}
         <div className="bg-background/50 font-incognito relative hidden items-center backdrop-blur-sm md:flex">
