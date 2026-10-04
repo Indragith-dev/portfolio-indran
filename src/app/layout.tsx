@@ -16,12 +16,25 @@ export const metadata: Metadata = {
   keywords: [...siteMeta.keywords],
 
   openGraph: {
+    type: "website",
+    url: siteMeta.url,
+    siteName: siteMeta.title,
+    title: siteMeta.title,
+    description: siteMeta.description,
     images: [
       {
         url: siteMeta.ogImage,
+        width: 1200,
+        height: 630,
         alt: `${siteMeta.title} — portfolio`,
       },
     ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteMeta.title,
+    description: siteMeta.description,
+    images: [siteMeta.ogImage],
   },
 };
 

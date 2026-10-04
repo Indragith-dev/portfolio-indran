@@ -1,7 +1,7 @@
 import React from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/lib/utils";
-import { Play, Pause } from "lucide-react";
+import { Play, Pause, ChevronLeft, ChevronRight } from "lucide-react";
 import ReactPlayer from "react-player";
 // import "@/styles/music-player.css";
 
@@ -12,16 +12,21 @@ type MusicPlayerProps = {
   artist?: string;
   className?: string;
   isPlaying: boolean;
+  /** Skip to the next track; also called when a track finishes. */
+  onNext?: () => void;
+  onPrevious?: () => void;
 };
 
 type AudioOnlyPlayerProps = {
   url: string;
   isPlaying: boolean;
+  onEnded?: () => void;
 };
 
 export const AudioOnlyPlayer: React.FC<AudioOnlyPlayerProps> = ({
   url,
   isPlaying,
+  onEnded,
 }) => {
   return (
     <div style={{ width: 0, height: 0, overflow: "hidden", opacity: 0 }}>
@@ -32,6 +37,7 @@ export const AudioOnlyPlayer: React.FC<AudioOnlyPlayerProps> = ({
         height="0"
         controls={false}
         playsInline
+        onEnded={onEnded}
       />
     </div>
   );
@@ -51,6 +57,8 @@ const YouTubeScreen: React.FC<MusicPlayerProps> = ({
   artist,
   className,
   isPlaying,
+  onNext,
+  onPrevious,
 }) => (
   <div
     className={cn(
@@ -74,13 +82,39 @@ const YouTubeScreen: React.FC<MusicPlayerProps> = ({
         height="100%"
         controls={false}
         playsInline
+        onEnded={onNext}
       />
     </div>
-    <p className="relative z-10 w-[356px] max-w-full shrink-0 truncate text-center text-[11px] leading-[14px] text-white">
-      <span className="font-semibold">{trackTitle}</span>
-      <span className="text-white/70"> · {artist}</span>
-    </p>
+    {/* Track line: previous / title / next (also ← → on the console) */}
+    <div className="relative z-10 flex w-[356px] max-w-full shrink-0 items-center gap-1 text-[11px] leading-[14px] text-white">
+      <TrackButton label="Previous track" onClick={onPrevious}>
+        <ChevronLeft className="size-3.5" />
+      </TrackButton>
+      <p className="min-w-0 flex-1 truncate text-center">
+        <span className="font-semibold">{trackTitle}</span>
+        <span className="text-white/70"> · {artist}</span>
+      </p>
+      <TrackButton label="Next track" onClick={onNext}>
+        <ChevronRight className="size-3.5" />
+      </TrackButton>
+    </div>
   </div>
+);
+
+const TrackButton: React.FC<{
+  label: string;
+  onClick?: () => void;
+  children: React.ReactNode;
+}> = ({ label, onClick, children }) => (
+  <button
+    type="button"
+    onClick={onClick}
+    disabled={!onClick}
+    aria-label={label}
+    className="flex size-3.5 shrink-0 items-center justify-center rounded-sm text-white/80 transition-colors hover:bg-white/20 hover:text-white disabled:opacity-30"
+  >
+    {children}
+  </button>
 );
 
 const MusicPlayer: React.FC<MusicPlayerProps> = (props) => {
@@ -96,6 +130,7 @@ const AudioFilePlayer: React.FC<MusicPlayerProps> = ({
   artist = "Artist Name",
   className,
   isPlaying,
+  onNext,
 }) => {
   return (
     <div
@@ -394,7 +429,7 @@ const AudioFilePlayer: React.FC<MusicPlayerProps> = ({
         )}
       </AnimatePresence>
 
-      <AudioOnlyPlayer isPlaying={isPlaying} url={src} />
+      <AudioOnlyPlayer isPlaying={isPlaying} url={src} onEnded={onNext} />
     </div>
   );
 };

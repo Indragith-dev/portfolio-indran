@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useMemo, RefObject } from "react";
+import { useState, useRef, useMemo, useEffect, RefObject } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
 import {
@@ -44,9 +44,11 @@ import { Marquee } from "@/components/ui/marquee";
 import { BackgroundGridAnimated } from "@/components/shared/backgrounds";
 import {
   buildContributionCalendar,
+  contributionDays,
   getGitHubStats,
   githubSummary,
   techStack as TECH_STACK,
+  type GitHubSummary,
 } from "@/config/portfolio-data";
 import dayjs from "dayjs";
 
@@ -177,7 +179,8 @@ const OverviewContent = ({ data }: { data?: GitHubStatsResponse }) => {
   ];
 
   const visibleLanguages = data?.topLanguages?.slice(0, 3) ?? [];
-  const hiddenLanguageCount = (data?.topLanguages?.length ?? 0) - visibleLanguages.length;
+  const hiddenLanguageCount =
+    (data?.topLanguages?.length ?? 0) - visibleLanguages.length;
 
   return (
     <div className="space-y-6">
@@ -427,14 +430,15 @@ const ActivityContent = ({ data }: { data?: GitHubStatsResponse }) => {
 
   const [selectedYear, setSelectedYear] = useState(currentYear);
 
+  const joinYear = data?.joinYear ?? githubSummary.joinYear;
   const years = Array.from(
-    { length: currentYear - githubSummary.joinYear + 1 },
-    (_, i) => githubSummary.joinYear + i,
+    { length: currentYear - joinYear + 1 },
+    (_, i) => joinYear + i,
   ).reverse();
 
   const calendar = useMemo(
-    () => buildContributionCalendar(selectedYear),
-    [selectedYear],
+    () => buildContributionCalendar(selectedYear, data?.contributionDays),
+    [selectedYear, data?.contributionDays],
   );
 
   const contributionData =
@@ -463,13 +467,7 @@ const ActivityContent = ({ data }: { data?: GitHubStatsResponse }) => {
             <div className="flex items-center gap-2">
               <CalendarDays className="text-muted-foreground h-4 w-4" />
               <span className="text-muted-foreground text-xs">
-                <NumberTicker
-                  value={
-                    data?.contributionsCollection?.contributionCalendar
-                      ?.totalContributions ?? 0
-                  }
-                  delay={0.1}
-                />{" "}
+                <NumberTicker value={calendar.totalContributions} delay={0.1} />{" "}
                 contributions
               </span>
             </div>
@@ -663,7 +661,6 @@ const InsightsContent = ({ data }: { data?: GitHubStatsResponse }) => {
 
       {/* Metrics Grid */}
       <div className="grid gap-4 md:grid-cols-2">
-        
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -761,8 +758,30 @@ export default function Stats() {
   const browserName = useDetectBrowser();
   const isSafari = browserName === "Safari";
 
-  // Static: edit the numbers in src/config/portfolio-data.ts.
-  const githubData = useMemo(() => getGitHubStats(dayjs().year()), []);
+  // Starts with the snapshot in portfolio-data.ts, then swaps in live numbers
+  // from /api/github-stats (cached on the server for an hour).
+  const [source, setSource] = useState<{
+    summary: GitHubSummary;
+    days: Record<string, number>;
+  }>({ summary: githubSummary, days: contributionDays });
+
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch("/api/github-stats", { signal: controller.signal })
+      .then((r) => (r.ok ? r.json() : null))
+      .then(
+        (live) =>
+          live?.summary &&
+          setSource({ summary: live.summary, days: live.days }),
+      )
+      .catch(() => {});
+    return () => controller.abort();
+  }, []);
+
+  const githubData = useMemo(
+    () => getGitHubStats(dayjs().year(), source.summary, source.days),
+    [source],
+  );
 
   const renderTabContent = () => {
     switch (activeTab) {

@@ -47,6 +47,9 @@ export type Trend = {
 
 export type GitHubStatsResponse = {
   contributionsCollection: ContributionsCollection;
+  joinYear: number;
+  /** Date (YYYY-MM-DD) to contribution count, for building any year's heatmap. */
+  contributionDays: Record<string, number>;
   totalRepositories: number;
   totalStars: number;
   followers: {

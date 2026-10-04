@@ -47,8 +47,8 @@ export const siteMeta = {
     "typescript",
     "portfolio",
   ],
-  /** TODO: swap for a 1200x630 PNG — most social platforms ignore SVG. */
-  ogImage: "/og-image.svg",
+  /** 1200x630 preview shown when the site's link is shared. */
+  ogImage: "/og-image.png",
 } as const;
 
 /* ── Social links ─────────────────────────────────────────────────────────── */
@@ -68,7 +68,7 @@ export const social = {
 export const heroStats = [
   { label: "Years of Experience", value: profile.yearsOfExperience },
   { label: "Projects Delivered", value: 25 },
-  { label: "Enterprise Clients", value: 6 },
+  { label: "Enterprise Clients", value: 7 },
   { label: "Technologies Used", value: 20 },
 ];
 
@@ -484,14 +484,36 @@ export const techStack = {
 
 /* ── Stats section ────────────────────────────────────────────────────────── */
 
+export type GitHubSummary = {
+  joinYear: number;
+  totalRepositories: number;
+  totalStars: number;
+  contributions: number;
+  followers: number;
+  currentStreak: number;
+  longestStreak: number;
+  bestDayCommits: number;
+  bestDayDate: string;
+  originalRepos: number;
+  forkedRepos: number;
+  pullRequests: { open: number; closed: number; merged: number };
+  issues: { open: number; closed: number };
+  weeklyTrends: {
+    repositories: number;
+    stars: number;
+    contributions: number;
+    pullRequests: number;
+  };
+  topLanguages: { name: string; color: string; percentage: number }[];
+};
+
 /**
- * Snapshot of public GitHub data for Indragith-dev, taken 4 Oct 2026 from the
- * GitHub REST API (repos, followers, languages, pull requests) and the public
- * contribution calendar (github.com/users/Indragith-dev/contributions).
- * Contribution numbers cover the 12 months up to that date. To refresh, copy
- * the new numbers and the non-zero days from those two sources.
+ * GitHub numbers for the Stats section. The site loads live numbers from
+ * /api/github-stats (src/lib/github-live.ts, refreshed hourly); this snapshot
+ * from 4 Oct 2026 is shown first and stays as the fallback if GitHub can't be
+ * reached. Contribution numbers cover the 12 months up to that date.
  */
-export const githubSummary = {
+export const githubSummary: GitHubSummary = {
   joinYear: 2023,
   totalRepositories: 16,
   totalStars: 0,
@@ -519,7 +541,7 @@ export const githubSummary = {
     { name: "CSS", color: "#563d7c", percentage: 4.2 },
     { name: "Java", color: "#b07219", percentage: 1.8 },
   ],
-} as const;
+};
 
 /** Days with contributions in the snapshot above (date: count); all others are 0. */
 export const contributionDays: Record<string, number> = {
@@ -539,14 +561,18 @@ export const contributionDays: Record<string, number> = {
 };
 
 /** GitHub-style shade (0–4) for a day's count, relative to the busiest day. */
-function contributionLevel(count: number) {
+function contributionLevel(count: number, busiest: number) {
   if (count === 0) return 0;
-  const ratio = count / githubSummary.bestDayCommits;
+  const ratio = count / Math.max(busiest, 1);
   return ratio > 0.75 ? 4 : ratio > 0.5 ? 3 : ratio > 0.25 ? 2 : 1;
 }
 
-/** Builds the heatmap for `year` from `contributionDays`. */
-export function buildContributionCalendar(year: number) {
+/** Builds the heatmap for `year` from a map of date to contribution count. */
+export function buildContributionCalendar(
+  year: number,
+  days: Record<string, number> = contributionDays,
+) {
+  const busiest = Math.max(1, ...Object.values(days));
   const colors = ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"];
   const start = new Date(Date.UTC(year, 0, 1));
   // Back up to the Sunday on or before Jan 1, the way GitHub lays the grid out.
@@ -556,21 +582,21 @@ export function buildContributionCalendar(year: number) {
   const cursor = new Date(start);
 
   while (cursor.getUTCFullYear() <= year) {
-    const days = [];
+    const weekDays = [];
     const firstDay = cursor.toISOString().slice(0, 10);
 
     for (let d = 0; d < 7; d++) {
       const date = cursor.toISOString().slice(0, 10);
-      const count = contributionDays[date] ?? 0;
-      days.push({
-        color: colors[contributionLevel(count)],
+      const count = days[date] ?? 0;
+      weekDays.push({
+        color: colors[contributionLevel(count, busiest)],
         contributionCount: count,
         date,
       });
       cursor.setUTCDate(cursor.getUTCDate() + 1);
     }
 
-    weeks.push({ contributionDays: days, firstDay });
+    weeks.push({ contributionDays: weekDays, firstDay });
     if (cursor.getUTCFullYear() > year) break;
   }
 
@@ -584,7 +610,7 @@ export function buildContributionCalendar(year: number) {
 
   return {
     colors,
-    totalContributions: Object.entries(contributionDays)
+    totalContributions: Object.entries(days)
       .filter(([date]) => date.startsWith(`${year}-`))
       .reduce((sum, [, count]) => sum + count, 0),
     months,
@@ -592,9 +618,12 @@ export function buildContributionCalendar(year: number) {
   };
 }
 
-/** Assembled once and handed to the Stats section in place of the old API call. */
-export function getGitHubStats(year: number): GitHubStatsResponse {
-  const s = githubSummary;
+/** Shapes summary + daily counts (snapshot or live) for the Stats section. */
+export function getGitHubStats(
+  year: number,
+  s: GitHubSummary = githubSummary,
+  days: Record<string, number> = contributionDays,
+): GitHubStatsResponse {
   const totalPRs =
     s.pullRequests.open + s.pullRequests.closed + s.pullRequests.merged;
   const totalIssues = s.issues.open + s.issues.closed;
@@ -607,8 +636,10 @@ export function getGitHubStats(year: number): GitHubStatsResponse {
 
   return {
     contributionsCollection: {
-      contributionCalendar: buildContributionCalendar(year),
+      contributionCalendar: buildContributionCalendar(year, days),
     },
+    joinYear: s.joinYear,
+    contributionDays: days,
     totalRepositories: s.totalRepositories,
     totalStars: s.totalStars,
     followers: { totalCount: s.followers, nodes: [] },
@@ -756,12 +787,25 @@ export const testimonials = colleagues
 /* ── Music player ─────────────────────────────────────────────────────────── */
 
 /**
- * Copyright-free tracks from NoCopyrightSounds (NCS), streamed from YouTube's
- * embedded player rather than hosted here. To add one, use a YouTube video
- * that allows embedding; the cover is its thumbnail at
+ * Streamed from YouTube's embedded player, never hosted here: official artist
+ * uploads (playback licensed through YouTube) and copyright-free tracks from
+ * NoCopyrightSounds (NCS). To add one, use a YouTube video that allows
+ * embedding; the cover is its thumbnail at
  * https://i.ytimg.com/vi/<video id>/hqdefault.jpg.
  */
 export const playlist: Song[] = [
+  {
+    url: "https://www.youtube.com/watch?v=ApXoWvfEYVU",
+    cover: "https://i.ytimg.com/vi/ApXoWvfEYVU/hqdefault.jpg",
+    title: "Sunflower",
+    channel: "Post Malone, Swae Lee",
+  },
+  {
+    url: "https://www.youtube.com/watch?v=PEM0Vs8jf1w",
+    cover: "https://i.ytimg.com/vi/PEM0Vs8jf1w/hqdefault.jpg",
+    title: "golden hour",
+    channel: "JVKE",
+  },
   {
     url: "https://www.youtube.com/watch?v=K4DyBUG242c",
     cover: "https://i.ytimg.com/vi/K4DyBUG242c/hqdefault.jpg",

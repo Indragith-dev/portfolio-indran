@@ -12,7 +12,7 @@ import React, { useState, useMemo, useRef, useCallback, useEffect } from "react"
 import { BackgroundNoise } from "../shared/backgrounds";
 import { Logo } from "../ui/logo";
 import { ThemeToggleButton2 } from "../theme-toggle";
-import { cn, getRandomElement } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { playlist, profile } from "@/config/portfolio-data";
 import Link from "next/link";
 import { InteractiveHoverButton } from "../ui/interactive-hover-button";
@@ -238,7 +238,14 @@ const HomePage = () => {
   const [selectedItem, setSelectedItem] = useState<MenuItem>("portfolio");
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
   // Static playlist — starts on the first track so server and client agree.
-  const [song, setSong] = useState<Song | null>(playlist[0] ?? null);
+  const [trackIndex, setTrackIndex] = useState(0);
+  const song: Song | null = playlist[trackIndex] ?? null;
+
+  /** Steps through the playlist in order, wrapping at either end. */
+  const changeTrack = useCallback((step: 1 | -1) => {
+    if (playlist.length === 0) return;
+    setTrackIndex((i) => (i + step + playlist.length) % playlist.length);
+  }, []);
 
   const snakeRef = useRef<SnakeGameHandle | null>(null);
   const consoleRef = useRef<HTMLDivElement | null>(null);
@@ -328,6 +335,13 @@ const HomePage = () => {
         return;
       }
 
+      // Music screen: ← → change track (keeps playing if it was).
+      if (currentConsoleNavigation === "music") {
+        if (action === "left") changeTrack(-1);
+        if (action === "right") changeTrack(1);
+        return;
+      }
+
       if (currentConsoleNavigation !== "main") return;
 
       const nextItem = getNextMenuItem(selectedItem, action);
@@ -335,7 +349,7 @@ const HomePage = () => {
         setSelectedItem(nextItem);
       }
     },
-    [currentConsoleNavigation, selectedItem, getNextMenuItem],
+    [currentConsoleNavigation, selectedItem, getNextMenuItem, changeTrack],
   );
 
   const handleActionButtonClick = useCallback(
@@ -369,10 +383,7 @@ const HomePage = () => {
       }
 
       if (action === "B") {
-        if (currentConsoleNavigation === "music" && playlist.length > 0) {
-          setIsMusicPlaying(false);
-          setSong(getRandomElement(playlist));
-        }
+        if (currentConsoleNavigation === "music") setIsMusicPlaying(false);
 
         setCurrentConsoleNavigation("main");
       }
@@ -391,6 +402,8 @@ const HomePage = () => {
           trackTitle={song.title}
           coverImage={song.cover}
           className="absolute inset-0"
+          onNext={() => changeTrack(1)}
+          onPrevious={() => changeTrack(-1)}
         />
       ),
       play: <SnakeGame ref={snakeRef} className="absolute inset-0" />,
@@ -422,7 +435,7 @@ const HomePage = () => {
         </motion.div>
       </AnimatePresence>
     );
-  }, [currentConsoleNavigation, selectedItem, song, isMusicPlaying]);
+  }, [currentConsoleNavigation, selectedItem, song, isMusicPlaying, changeTrack]);
 
   return (
     <main className="no-scrollbar font-pixelify grid-center border-border text-foreground bg-background relative size-full h-dvh overflow-hidden [--background:white] [--border:var(--color-foreground)] dark:[--background:#0B0B0F] dark:[--border:#F6EAC5] dark:[--foreground:#F6EAC5]">
