@@ -87,8 +87,7 @@ export const aboutParagraphs = [
       "I started in frontend at K2web, went full stack at KodNest, and now own features end to end at MAV-S Innovations",
     gif: "/gifs/cate%20coding.gif",
     gifAlt: "cat intensely coding",
-    after:
-      "— React and TypeScript on top, C# and ASP.NET Core underneath.",
+    after: "— React and TypeScript on top, C# and ASP.NET Core underneath.",
   },
   {
     before:
@@ -167,8 +166,7 @@ export const projects: Project[] = [
       "The AI assistant on this portfolio. It answers questions about my work from a curated profile, streams its replies, moves the page to what it's talking about, and powers the contact form.",
     overview:
       "AIRA is the chatbot built into this site. Visitors ask about my projects, skills or experience and get answers streamed in real time from Google Gemini, grounded strictly in my profile; anything off-topic gets a polite, fixed reply. It can also act on the page, scrolling to a project, highlighting a skill or opening a section, and the same backend delivers the contact form by email.",
-    role:
-      "Designed and built it end to end: the serverless API on Vercel, the prompt and guardrails, and the animated robot chat in Next.js.",
+    role: "Designed and built it end to end: the serverless API on Vercel, the prompt and guardrails, and the animated robot chat in Next.js.",
     highlights: [
       "Serverless API on Vercel that streams Gemini replies to the browser as they're written",
       "Answers only from a curated profile, with a fixed reply for off-topic questions and prompt-injection attempts",
@@ -178,7 +176,16 @@ export const projects: Project[] = [
       "Contact form delivered by email through Resend, with a hidden field to catch bots",
       "Animated robot cut from layered artwork: it peeks in, waves, thinks, talks and walks, with sound effects",
     ],
-    stack: ["TypeScript", "Google Gemini", "Vercel Functions", "Next.js", "React", "Motion", "Tailwind CSS", "Resend"],
+    stack: [
+      "TypeScript",
+      "Google Gemini",
+      "Vercel Functions",
+      "Next.js",
+      "React",
+      "Motion",
+      "Tailwind CSS",
+      "Resend",
+    ],
     tags: ["AI", "TypeScript", "Next.js", "Serverless"],
     image: "/projects/aira.svg",
     github: "https://github.com/Indragith-dev/AI-Portfolio-chatbot",
@@ -192,8 +199,7 @@ export const projects: Project[] = [
       "Enterprise DMS pairing a React vendor portal with an internal SharePoint portal for multi-stage document review and approval, deployed on-site in a secure data centre in Abu Dhabi.",
     overview:
       "A full stack document management platform for an enterprise client. External vendors submit and track documents through a React portal, while internal teams review and approve them in a SharePoint portal through multi-stage workflows.",
-    role:
-      "Built the platform end to end, from the React vendor portal and SharePoint portal to the ASP.NET Core API, then travelled to Abu Dhabi and deployed it on the client's air-gapped servers on my own.",
+    role: "Built the platform end to end, from the React vendor portal and SharePoint portal to the ASP.NET Core API, then travelled to Abu Dhabi and deployed it on the client's air-gapped servers on my own.",
     highlights: [
       "React vendor portal with JWT authentication",
       "Internal SharePoint (SPFx) portal driving multi-stage review and approval workflows",
@@ -201,11 +207,24 @@ export const projects: Project[] = [
       "SharePoint integration through PnP, with Hangfire for background jobs",
       "Set up and deployed on-site on an air-gapped, on-premise server inside a secure data centre vault in Abu Dhabi, handling the full server configuration in person",
     ],
-    stack: ["React", "TypeScript", "ASP.NET Core", "EF Core", "SQL Server", "SharePoint SPFx", "PnP", "Hangfire", "JWT"],
+    stack: [
+      "React",
+      "TypeScript",
+      "ASP.NET Core",
+      "EF Core",
+      "SQL Server",
+      "SharePoint SPFx",
+      "PnP",
+      "Hangfire",
+      "JWT",
+    ],
     tags: ["Enterprise", ".NET", "React", "SharePoint"],
     image: "/projects/dms.svg",
     gallery: [
-      { src: "/gallery/linkedin-abudhabi.jpg", caption: "On site at the data centre in Abu Dhabi for the deployment" },
+      {
+        src: "/gallery/linkedin-abudhabi.jpg",
+        caption: "On site at the data centre in Abu Dhabi for the deployment",
+      },
     ],
     company: "MAV-S Innovations",
     date: "2024",
@@ -218,15 +237,22 @@ export const projects: Project[] = [
       "Multi-tenant modular monolith on .NET 9 that unifies strategic planning, project management and task management, built with CQRS and event-driven messaging.",
     overview:
       "ISOP brings an organisation's strategic planning, project management and task management into a single multi-tenant platform. It is a modular monolith on .NET 9 and PostgreSQL, with modules talking to each other through events over Wolverine and RabbitMQ.",
-    role:
-      "Leading backend development. I own the Project Management module and have built major parts of Task Management.",
+    role: "Leading backend development. I own the Project Management module and have built major parts of Task Management.",
     highlights: [
       "Multi-tenant modular monolith on .NET 9 and PostgreSQL",
       "CQRS with event-driven messaging over Wolverine and RabbitMQ",
       "Owns the Project Management module: meetings, phases, risks, issues and vendors",
       "Built major parts of Task Management: workspaces, dashboards and tasks",
     ],
-    stack: [".NET 9", "C#", "PostgreSQL", "EF Core", "Wolverine", "RabbitMQ", "CQRS"],
+    stack: [
+      ".NET 9",
+      "C#",
+      "PostgreSQL",
+      "EF Core",
+      "Wolverine",
+      "RabbitMQ",
+      "CQRS",
+    ],
     tags: ["Architecture", ".NET", "PostgreSQL", "CQRS"],
     image: "/projects/isop.svg",
     company: "MAV-S Innovations",
@@ -268,7 +294,14 @@ export const projects: Project[] = [
       "Approval workflow that routes verified invoices through to payment",
       "Clean Architecture on .NET with PostgreSQL",
     ],
-    stack: [".NET", "C#", "React", "PostgreSQL", "Oracle", "Clean Architecture"],
+    stack: [
+      ".NET",
+      "C#",
+      "React",
+      "PostgreSQL",
+      "Oracle",
+      "Clean Architecture",
+    ],
     tags: ["Automation", ".NET", "React", "PostgreSQL"],
     image: "/projects/grn.svg",
     company: "MAV-S Innovations",
@@ -326,12 +359,16 @@ export const awards = {
     description:
       "Recognised by MAV-S Innovations for delivering production-ready software across its enterprise projects.",
     image: "/gallery/achieveraward.jpg",
-    imageAlt: "Indragith receiving the High Achiever Award cheque at MAV-S Innovations",
+    imageAlt:
+      "Indragith receiving the High Achiever Award cheque at MAV-S Innovations",
   },
   /** Other recognitions and roles from the resume. */
   others: [
     { title: "IT Support Head", organisation: "MAV-S Innovations" },
-    { title: "Best Event Coordinator", organisation: "Office Event Coordinator Head" },
+    {
+      title: "Best Event Coordinator",
+      organisation: "Office Event Coordinator Head",
+    },
     { title: "Executive Member", organisation: "Skill Development Committee" },
     { title: "Member", organisation: "Technopark AWS Community" },
   ],
@@ -369,7 +406,8 @@ The networking and conversations with fellow developers and technology enthusias
 Looking forward to attending more community meetups and continuing to learn.`,
     tags: ["AWS", "AWSUserGroup", "AWSBedrock", "GenAI"],
     image: "/gallery/linkedin-aws-meetup.jpg",
-    imageAlt: "Indragith at the AWS User Group Trivandrum September community meetup",
+    imageAlt:
+      "Indragith at the AWS User Group Trivandrum September community meetup",
   },
   {
     url: "https://www.linkedin.com/feed/update/urn:li:ugcPost:7480694445533745152/",
@@ -413,7 +451,8 @@ One of the biggest lessons Agile has taught me is that great software is built t
 Always learning, always improving, and always looking forward to building impactful solutions.`,
     tags: ["Agile", "Scrum", "PlanningPoker", "FullStackDeveloper"],
     image: "/gallery/linkedin-agile.jpg",
-    imageAlt: "Agile Planning Poker cards held up in front of the MAV-S Innovations sign",
+    imageAlt:
+      "Agile Planning Poker cards held up in front of the MAV-S Innovations sign",
   },
   {
     url: "https://www.linkedin.com/feed/update/urn:li:share:7414028215641518080/",
@@ -426,9 +465,15 @@ I would like to extend my sincere thanks to our Founder & Lead, Minhaj Raheem, f
 A big thank you to my team as well—this wouldn’t have been possible without the collaborative and supportive environment at MAV-S Innovations.
 
 Looking forward to achieving many more milestones together.`,
-    tags: ["HighAchieverAward", "MAVSInnovations", "SoftwareEngineer", "TeamWork"],
+    tags: [
+      "HighAchieverAward",
+      "MAVSInnovations",
+      "SoftwareEngineer",
+      "TeamWork",
+    ],
     image: "/gallery/linkedin-award.jpg",
-    imageAlt: "Indragith receiving the High Achiever Award at MAV-S Innovations",
+    imageAlt:
+      "Indragith receiving the High Achiever Award at MAV-S Innovations",
   },
 ];
 
@@ -499,7 +544,12 @@ export const githubSummary = {
   pullRequests: { open: 0, closed: 0, merged: 0 },
   issues: { open: 0, closed: 0 },
   /** Weekly deltas shown as the small green "+n" next to each counter. */
-  weeklyTrends: { repositories: 0, stars: 0, contributions: 0, pullRequests: 0 },
+  weeklyTrends: {
+    repositories: 0,
+    stars: 0,
+    contributions: 0,
+    pullRequests: 0,
+  },
   topLanguages: [
     { name: "TypeScript", color: "#3178c6", percentage: 49.4 },
     { name: "JavaScript", color: "#f1e05a", percentage: 33.4 },
@@ -542,17 +592,25 @@ export function buildContributionCalendar(year: number) {
 
   const months = Array.from({ length: 12 }, (_, m) => ({
     firstDay: new Date(Date.UTC(year, m, 1)).toISOString().slice(0, 10),
-    name: new Date(Date.UTC(year, m, 1)).toLocaleString("en", { month: "short" }),
+    name: new Date(Date.UTC(year, m, 1)).toLocaleString("en", {
+      month: "short",
+    }),
     totalWeeks: 4,
   }));
 
-  return { colors, totalContributions: githubSummary.contributions, months, weeks };
+  return {
+    colors,
+    totalContributions: githubSummary.contributions,
+    months,
+    weeks,
+  };
 }
 
 /** Assembled once and handed to the Stats section in place of the old API call. */
 export function getGitHubStats(year: number): GitHubStatsResponse {
   const s = githubSummary;
-  const totalPRs = s.pullRequests.open + s.pullRequests.closed + s.pullRequests.merged;
+  const totalPRs =
+    s.pullRequests.open + s.pullRequests.closed + s.pullRequests.merged;
   const totalIssues = s.issues.open + s.issues.closed;
 
   const trend = (value: number, total: number) => ({
@@ -562,7 +620,9 @@ export function getGitHubStats(year: number): GitHubStatsResponse {
   });
 
   return {
-    contributionsCollection: { contributionCalendar: buildContributionCalendar(year) },
+    contributionsCollection: {
+      contributionCalendar: buildContributionCalendar(year),
+    },
     totalRepositories: s.totalRepositories,
     totalStars: s.totalStars,
     followers: { totalCount: s.followers, nodes: [] },
@@ -593,21 +653,161 @@ export function getGitHubStats(year: number): GitHubStatsResponse {
 /* ── Testimonials ─────────────────────────────────────────────────────────── */
 
 /**
- * TODO: these are placeholder quotes — you did not give me any real ones.
- * Replace them with genuine quotes, or delete the <Testimonials /> line in
- * src/components/pages/portfolio.tsx to drop the section entirely.
- * Do not publish these as if they were real endorsements.
+ * Colleagues who can vouch for my work. Paste each person's approved words
+ * into `quote` (their own wording, or a draft from testimonial-requests.md
+ * that they have read and OK'd). Only entries with a quote are shown; until
+ * the first one is filled in, the section keeps the placeholder cards below.
  */
-export const testimonials = [
-  { testimonial: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", by: "Placeholder Name, Role at Company" },
-  { testimonial: "Sed do eiusmod tempor incididunt ut labore et dolore magna.", by: "Placeholder Name, Role at Company" },
-  { testimonial: "Ut enim ad minim veniam, quis nostrud exercitation ullamco.", by: "Placeholder Name, Role at Company" },
-  { testimonial: "Duis aute irure dolor in reprehenderit in voluptate velit esse.", by: "Placeholder Name, Role at Company" },
-  { testimonial: "Excepteur sint occaecat cupidatat non proident, sunt in culpa.", by: "Placeholder Name, Role at Company" },
-  { testimonial: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur.", by: "Placeholder Name, Role at Company" },
-  { testimonial: "Neque porro quisquam est qui dolorem ipsum quia dolor sit.", by: "Placeholder Name, Role at Company" },
-  { testimonial: "At vero eos et accusamus et iusto odio dignissimos ducimus.", by: "Placeholder Name, Role at Company" },
-].map((t, i) => ({ ...t, tempId: i, imgSrc: "/profile.svg" }));
+export const colleagues: {
+  name: string;
+  role: string;
+  company: string;
+  quote: string;
+  /** Optional photo in /public; falls back to the generic avatar. */
+  photo?: string;
+}[] = [
+  {
+    name: "Ajesh Anand",
+    role: "Manager",
+    company: "MAV-S Innovations",
+    quote:
+      "Indragith takes ownership from requirements to production. When we needed our document management platform set up inside a secure, air-gapped data centre in Abu Dhabi, he went on-site and handled the whole deployment on his own. Dependable, calm under pressure, and a well-deserved High Achiever.",
+  },
+  {
+    name: "Aswathi V",
+    role: "Business Analyst",
+    company: "MAV-S Innovations",
+    quote:
+      "Working with Indragith on requirements is easy. He asks the right questions early, spots edge cases before they become bugs, and turns business workflows into features that do exactly what the client needed.",
+  },
+  {
+    name: "Libin Philip",
+    role: "Backend Engineer",
+    company: "MAV-S Innovations",
+    quote:
+      "Indragith brings real architectural thinking to the backend. On ISOP he owned the Project Management module end to end with CQRS and event-driven messaging, and his code is clean, well structured and easy to build on.",
+  },
+  {
+    name: "Teresa Tomy",
+    role: "AI Engineer",
+    company: "MAV-S Innovations",
+    quote:
+      "Indragith is curious about AI and quick to put it to practical use. He picks up new tools fast and thinks carefully about how they fit into real products, not just demos.",
+  },
+  {
+    name: "Gayathri G",
+    role: "Test Engineer",
+    company: "MAV-S Innovations",
+    quote:
+      "Indragith's builds are always thought through before they reach QA. He takes bug reports seriously, fixes issues quickly and clearly, and treats quality as his job too, not just testing's.",
+  },
+  {
+    name: "Vishnu Anand",
+    role: "Frontend Developer",
+    company: "MAV-S Innovations",
+    quote:
+      "Indragith writes React that's a pleasure to work in: well-structured components, sensible state management and a real eye for performance. He's always happy to help when you're stuck.",
+  },
+  {
+    name: "Arpita R Nair",
+    role: "UI/UX Designer",
+    company: "MAV-S Innovations",
+    quote:
+      "Indragith turns designs into interfaces that match the intent, not just the pixels. He respects the details, raises usability concerns early, and makes the design-to-development handoff smooth.",
+  },
+  {
+    name: "Krishnadev K R",
+    role: "Digital Marketing Expert",
+    company: "K2web Solutions",
+    quote:
+      "At K2web, Indragith built responsive, cross-browser websites for our clients that looked great and loaded fast. He was reliable with deadlines and easy to collaborate with across teams.",
+  },
+  {
+    name: "Salman Remli",
+    role: "Junior Frontend Developer",
+    company: "MAV-S Innovations",
+    quote:
+      "Indragith is a generous mentor. He explains the why behind his decisions, reviews code patiently, and has helped me grow a lot as a frontend developer.",
+  },
+  {
+    name: "Abhishek",
+    role: "Junior UI/UX Designer",
+    company: "MAV-S Innovations",
+    quote:
+      "Indragith is great to collaborate with as a designer. He's open to feedback, shares his own ideas, and works with you to make sure the final product feels right for users.",
+  },
+  {
+    name: "Varsha K A",
+    role: "HR",
+    company: "MAV-S Innovations",
+    quote:
+      "Beyond his work as a developer, Indragith lifts the whole team, from heading our office events to stepping up as IT Support Head. He's dependable, approachable and a big part of our culture.",
+  },
+  {
+    name: "Geethu Bhasuran",
+    role: "Tester",
+    company: "MAV-S Innovations",
+    quote:
+      "Indragith is responsive and thorough. He makes issues easy to reproduce and verify, and he never ships a fix without making sure it actually works.",
+  },
+];
+
+type TestimonialItem = { testimonial: string; by: string; photo?: string };
+
+/** Shown only until a colleague's quote is added. Not real endorsements. */
+const placeholderTestimonials: TestimonialItem[] = [
+  {
+    testimonial: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+    by: "Placeholder Name, Role at Company",
+  },
+  {
+    testimonial: "Sed do eiusmod tempor incididunt ut labore et dolore magna.",
+    by: "Placeholder Name, Role at Company",
+  },
+  {
+    testimonial: "Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
+    by: "Placeholder Name, Role at Company",
+  },
+  {
+    testimonial:
+      "Duis aute irure dolor in reprehenderit in voluptate velit esse.",
+    by: "Placeholder Name, Role at Company",
+  },
+  {
+    testimonial:
+      "Excepteur sint occaecat cupidatat non proident, sunt in culpa.",
+    by: "Placeholder Name, Role at Company",
+  },
+  {
+    testimonial: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur.",
+    by: "Placeholder Name, Role at Company",
+  },
+  {
+    testimonial: "Neque porro quisquam est qui dolorem ipsum quia dolor sit.",
+    by: "Placeholder Name, Role at Company",
+  },
+  {
+    testimonial: "At vero eos et accusamus et iusto odio dignissimos ducimus.",
+    by: "Placeholder Name, Role at Company",
+  },
+];
+
+const approvedTestimonials: TestimonialItem[] = colleagues
+  .filter((c) => c.quote.trim())
+  .map((c) => ({
+    testimonial: c.quote.trim(),
+    by: `${c.name}, ${c.role} at ${c.company}`,
+    photo: c.photo,
+  }));
+
+export const testimonials = (
+  approvedTestimonials.length ? approvedTestimonials : placeholderTestimonials
+).map((t, i) => ({
+  testimonial: t.testimonial,
+  by: t.by,
+  tempId: i,
+  imgSrc: t.photo || "/profile.svg",
+}));
 
 /* ── Music player ─────────────────────────────────────────────────────────── */
 

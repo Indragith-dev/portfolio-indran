@@ -10,6 +10,7 @@ import About from "./sections/about";
 import Footer from "./sections/footer";
 import Contact from "./sections/contact";
 import Stats from "./sections/stats";
+import { Testimonials } from "./sections/testimonials";
 
 const PortfolioPage = () => {
   return (
@@ -32,8 +33,7 @@ const PortfolioPage = () => {
               <Awards />
               <LinkedInPosts />
               <Stats />
-              {/* Testimonials (sections/testimonials.tsx) is hidden until there are
-                  real quotes in portfolio-data.ts — the current ones are placeholders. */}
+              <Testimonials />
               <Contact />
               <Footer />
             </div>

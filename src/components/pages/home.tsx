@@ -8,7 +8,7 @@ import { Mail, Linkedin, Github } from "lucide-react";
 import { AnimatePresence, motion, Variants } from "motion/react";
 import { useTheme } from "next-themes";
 import dynamic from "next/dynamic";
-import React, { useState, useMemo, useRef, useCallback } from "react";
+import React, { useState, useMemo, useRef, useCallback, useEffect } from "react";
 import { BackgroundNoise } from "../shared/backgrounds";
 import { Logo } from "../ui/logo";
 import { ThemeToggleButton2 } from "../theme-toggle";
@@ -247,6 +247,11 @@ const HomePage = () => {
   const { resolvedTheme, setTheme } = useTheme();
   const screenSize = useScreenSize();
   const router = useRouter();
+
+  // Preload the portfolio so the transition loader has less to wait for.
+  useEffect(() => {
+    router.prefetch("/portfolio");
+  }, [router]);
 
   const particleColors = useMemo(
     () =>

@@ -31,7 +31,7 @@ const PROJECT_TARGETS: Record<string, string | null> = {
 };
 
 /** Section ids the backend can send with show_section (element ids on the page). */
-const SECTIONS = ["projects", "awards", "linkedin", "about", "stats", "contact"];
+const SECTIONS = ["projects", "awards", "linkedin", "about", "stats", "testimonials", "contact"];
 
 export function handleAiraAction({ name, args }: AiraAction) {
   if (name === "focus_project") focusProject(String(args.id ?? ""));

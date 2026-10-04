@@ -210,9 +210,19 @@ export default function AiraChat({
   /** Hovering the peeking robot (or its bubble) says hi. */
   const onHoverStart = () => {
     clearTimeout(hoverTimer.current);
+    // Standing under the open chat: wave hi (unless busy thinking or talking).
+    if (phase === "open") {
+      if (!loading) react("greeting", GREETING_MS);
+      playHoverSound();
+      return;
+    }
     if (phase !== "peek") return;
     if (!showBubble) react("surprised", SURPRISE_MS);
     setHovering(true);
+    playHoverSound();
+  };
+
+  const playHoverSound = () => {
     const now = Date.now();
     if (now - lastHoverSound.current > HOVER_SOUND_COOLDOWN_MS) {
       lastHoverSound.current = now;

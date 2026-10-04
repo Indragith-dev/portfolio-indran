@@ -54,6 +54,20 @@ type Pose = {
 
 const STILL: Pose = { animate: { rotate: 0 }, transition: { duration: 0.3 } };
 
+/**
+ * CSS keyframe animations for the running pose (defined in globals.css).
+ * CSS transform animations run on the compositor, unlike the JS-driven poses,
+ * so the run stays smooth while the next page loads.
+ */
+const RUN_CLASSES = {
+  whole: "aira-run-body",
+  head: "aira-run-head",
+  leftArm: "aira-run-arm-a",
+  rightArm: "aira-run-arm-b",
+  leftLeg: "aira-run-leg-a",
+  rightLeg: "aira-run-leg-b",
+} as const;
+
 const POSES: Record<
   RobotState,
   {
@@ -103,16 +117,13 @@ const POSES: Record<
       right: { animate: { rotate: [16, -16, 16] }, transition: loop(0.6) },
     },
   },
-  // Running: quick strides and big arm swings, leaning into it.
+  // Running is animated in CSS (see RUN_CLASSES), so it keeps going while the
+  // main thread is busy, e.g. during a page load. These just hold still.
   running: {
-    whole: { animate: { y: ["0%", "-6%", "0%"], rotate: 6 }, transition: { y: loop(0.22), rotate: { duration: 0.2 } } },
-    head: { animate: { rotate: [-4, 4, -4] }, transition: loop(0.44) },
-    leftArm: { animate: { rotate: [28, -28, 28] }, transition: loop(0.44) },
-    rightArm: { animate: { rotate: [-28, 28, -28] }, transition: loop(0.44) },
-    legs: {
-      left: { animate: { rotate: [-26, 26, -26] }, transition: loop(0.44) },
-      right: { animate: { rotate: [26, -26, 26] }, transition: loop(0.44) },
-    },
+    whole: STILL,
+    head: STILL,
+    leftArm: STILL,
+    rightArm: STILL,
   },
   // Sad to go: slumped, slow shuffle, head drooping, arms hanging.
   sad: {
@@ -158,25 +169,26 @@ export function RobotCharacter({
   className?: string;
 }) {
   const pose = POSES[state];
+  const run = state === "running";
 
   return (
     <div aria-hidden className={cn("pointer-events-none relative aspect-square", className)}>
       {/* The source has wide transparent margins; enlarge it so the robot fills the box. */}
       <motion.div
-        className="absolute -inset-[38%]"
+        className={cn("absolute -inset-[38%]", run && RUN_CLASSES.whole)}
         // Only the running pose leans; every other pose stands upright.
         animate={{ rotate: 0, ...pose.whole.animate }}
         transition={pose.whole.transition}
       >
-        <Part {...PARTS.leftLeg} pose={pose.legs?.left ?? STILL} />
-        <Part {...PARTS.rightLeg} pose={pose.legs?.right ?? STILL} />
+        <Part {...PARTS.leftLeg} pose={pose.legs?.left ?? STILL} className={run ? RUN_CLASSES.leftLeg : undefined} />
+        <Part {...PARTS.rightLeg} pose={pose.legs?.right ?? STILL} className={run ? RUN_CLASSES.rightLeg : undefined} />
         <Part {...PARTS.body} />
-        <Part {...PARTS.leftArm} pose={pose.leftArm} />
-        <Part {...PARTS.head} pose={pose.head}>
+        <Part {...PARTS.leftArm} pose={pose.leftArm} className={run ? RUN_CLASSES.leftArm : undefined} />
+        <Part {...PARTS.head} pose={pose.head} className={run ? RUN_CLASSES.head : undefined}>
           <Screen state={state} />
         </Part>
         {/* Above the head so the waving hand stays visible. */}
-        <Part {...PARTS.rightArm} pose={pose.rightArm} />
+        <Part {...PARTS.rightArm} pose={pose.rightArm} className={run ? RUN_CLASSES.rightArm : undefined} />
       </motion.div>
     </div>
   );
@@ -186,16 +198,18 @@ function Part({
   clip,
   origin,
   pose,
+  className,
   children,
 }: {
   clip: string;
   origin: string;
   pose?: Pose;
+  className?: string;
   children?: React.ReactNode;
 }) {
   return (
     <motion.div
-      className="absolute inset-0"
+      className={cn("absolute inset-0", className)}
       style={{ transformOrigin: origin }}
       animate={pose?.animate}
       transition={pose?.transition}

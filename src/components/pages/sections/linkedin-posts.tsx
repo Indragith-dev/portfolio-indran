@@ -1,26 +1,94 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import SectionHeading from "@/components/section-heading";
 import { Button } from "@/components/ui/button";
 import { linkedinPosts, linkedinProfile, profile } from "@/config/portfolio-data";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
-import { ArrowUpRight, Linkedin } from "lucide-react";
+import { ArrowUpRight, ChevronLeft, ChevronRight, Linkedin } from "lucide-react";
 import { motion } from "motion/react";
 
 type Post = (typeof linkedinPosts)[number];
 
+/** Gap between cards in px; matches gap-6 on the row. */
+const GAP = 24;
+
 const LinkedInPosts = () => {
+  const rowRef = useRef<HTMLDivElement>(null);
+  const [canPrev, setCanPrev] = useState(false);
+  const [canNext, setCanNext] = useState(false);
+
+  const updateArrows = useCallback(() => {
+    const row = rowRef.current;
+    if (!row) return;
+    setCanPrev(row.scrollLeft > 4);
+    setCanNext(row.scrollLeft + row.clientWidth < row.scrollWidth - 4);
+  }, []);
+
+  useEffect(() => {
+    const row = rowRef.current;
+    if (!row) return;
+    updateArrows();
+    row.addEventListener("scroll", updateArrows, { passive: true });
+    const ro = new ResizeObserver(updateArrows);
+    ro.observe(row);
+    return () => {
+      row.removeEventListener("scroll", updateArrows);
+      ro.disconnect();
+    };
+  }, [updateArrows]);
+
+  /** Moves the row by one card. */
+  const slide = (dir: 1 | -1) => {
+    const row = rowRef.current;
+    const card = row?.firstElementChild as HTMLElement | null;
+    if (!row || !card) return;
+    row.scrollBy({ left: dir * (card.offsetWidth + GAP), behavior: "smooth" });
+  };
+
   return (
     <SectionHeading id="linkedin" text="LinkedIn">
-      <p className="text-muted-foreground px-4 pt-14 text-sm md:px-12 md:text-base">
-        Recent posts and updates from LinkedIn.
-      </p>
+      <div className="flex items-center justify-between gap-4 px-4 pt-14 md:px-12">
+        <p className="text-muted-foreground text-sm md:text-base">
+          Recent posts and updates from LinkedIn.
+        </p>
+        <div className="flex shrink-0 gap-2">
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => slide(-1)}
+            disabled={!canPrev}
+            aria-label="Previous posts"
+            className="border-2"
+          >
+            <ChevronLeft />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={() => slide(1)}
+            disabled={!canNext}
+            aria-label="Next posts"
+            className="border-2"
+          >
+            <ChevronRight />
+          </Button>
+        </div>
+      </div>
 
-      <div className="grid items-start gap-6 px-4 py-8 md:grid-cols-2 md:px-12 xl:grid-cols-4">
+      {/* 3 cards at a time on desktop, 2 on tablets, 1 on phones */}
+      <div
+        ref={rowRef}
+        className="no-scrollbar flex snap-x snap-mandatory scroll-px-4 items-start gap-6 overflow-x-auto scroll-smooth px-4 py-8 md:scroll-px-12 md:px-12"
+      >
         {linkedinPosts.map((post, i) => (
-          <PostCard key={post.url} post={post} index={i} />
+          <div
+            key={post.url}
+            className="w-full shrink-0 snap-start md:w-[calc((100%-1.5rem)/2)] xl:w-[calc((100%-3rem)/3)]"
+          >
+            <PostCard post={post} index={i} />
+          </div>
         ))}
       </div>
 

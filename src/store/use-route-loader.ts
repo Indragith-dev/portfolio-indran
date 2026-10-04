@@ -10,9 +10,9 @@ type RouteLoaderState = {
 };
 
 /**
- * Drives the AIRA page-transition loader (components/route-loader.tsx).
- * Link clicks are caught automatically; call `start` yourself before a
- * programmatic router.push.
+ * Drives the AIRA page-transition loader (components/route-loader.tsx), shown
+ * on every page change. Link clicks and browser back/forward are caught
+ * automatically; call `start` yourself before a programmatic router.push.
  */
 export const useRouteLoader = create<RouteLoaderState>()((set) => ({
   from: null,
@@ -20,6 +20,3 @@ export const useRouteLoader = create<RouteLoaderState>()((set) => ({
   start: (from, to) => set({ from, to }),
   finish: () => set({ from: null, to: null }),
 }));
-
-/** Navigations that start on these paths get the loader. */
-export const LOADER_FROM_PATHS = ["/"];

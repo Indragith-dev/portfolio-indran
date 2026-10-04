@@ -32,7 +32,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
     <div
       onClick={() => handleMove(position)}
       className={cn(
-        "absolute top-1/2 left-1/2 cursor-pointer border-2 p-8 transition-all duration-500 ease-in-out",
+        "absolute top-1/2 left-1/2 flex cursor-pointer flex-col border-2 p-6 transition-all duration-500 ease-in-out sm:p-8",
         isCenter
           ? "bg-primary text-primary-foreground border-primary z-10"
           : "bg-card text-card-foreground border-border hover:border-primary/50 z-0",
@@ -64,14 +64,14 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
       <img
         src={testimonial.imgSrc}
         alt={`${testimonial.by.split(",")[0]}`}
-        className="bg-muted mb-4 h-14 w-12 object-cover object-top"
+        className="bg-muted mb-3 h-10 w-9 shrink-0 object-cover object-top sm:mb-4 sm:h-14 sm:w-12"
         style={{
           boxShadow: "3px 3px 0px hsl(var(--background))",
         }}
       />
       <h3
         className={cn(
-          "text-base font-medium sm:text-xl",
+          "text-[13px] leading-relaxed font-medium sm:text-[15px]",
           isCenter ? "text-primary-foreground" : "text-foreground",
         )}
       >
@@ -79,7 +79,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
       </h3>
       <p
         className={cn(
-          "absolute right-8 bottom-8 left-8 mt-2 text-sm italic",
+          "mt-auto pt-3 text-xs italic sm:text-sm",
           isCenter ? "text-primary-foreground/80" : "text-muted-foreground",
         )}
       >
@@ -90,7 +90,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
 };
 
 export const Testimonials: React.FC = () => {
-  const [cardSize, setCardSize] = useState(365);
+  const [cardSize, setCardSize] = useState(380);
   const [testimonialsList, setTestimonialsList] = useState(testimonials);
 
   const handleMove = (steps: number) => {
@@ -114,7 +114,7 @@ export const Testimonials: React.FC = () => {
   useEffect(() => {
     const updateSize = () => {
       const { matches } = window.matchMedia("(min-width: 640px)");
-      setCardSize(matches ? 365 : 290);
+      setCardSize(matches ? 380 : 320);
     };
 
     updateSize();

@@ -255,3 +255,37 @@
     outline-color: transparent;
   }
 }
+
+/* AIRA running cycle (robot-character.tsx). Plain CSS so it runs on the
+   compositor and stays smooth while the next page is loading. */
+.aira-run-body { animation: aira-run-body 0.22s ease-in-out infinite; }
+.aira-run-head { animation: aira-run-head 0.44s ease-in-out infinite; }
+.aira-run-arm-a { animation: aira-run-swing 0.44s ease-in-out infinite; --aira-swing: 28deg; }
+.aira-run-arm-b { animation: aira-run-swing 0.44s ease-in-out infinite; --aira-swing: -28deg; }
+.aira-run-leg-a { animation: aira-run-swing 0.44s ease-in-out infinite; --aira-swing: -26deg; }
+.aira-run-leg-b { animation: aira-run-swing 0.44s ease-in-out infinite; --aira-swing: 26deg; }
+
+@keyframes aira-run-body {
+  0%, 100% { transform: translateY(0) rotate(6deg); }
+  50% { transform: translateY(-6%) rotate(6deg); }
+}
+@keyframes aira-run-head {
+  0%, 100% { transform: rotate(-4deg); }
+  50% { transform: rotate(4deg); }
+}
+@keyframes aira-run-swing {
+  0%, 100% { transform: rotate(var(--aira-swing)); }
+  50% { transform: rotate(calc(var(--aira-swing) * -1)); }
+}
+
+/* Route loader (route-loader.tsx): dust behind AIRA and the marching stripes. */
+.aira-dust { opacity: 0; animation: aira-dust 0.55s ease-out infinite; }
+@keyframes aira-dust {
+  from { transform: translate(0, 0) scale(0.6); opacity: 0.8; }
+  to { transform: translate(-26px, -8px) scale(1.5); opacity: 0; }
+}
+.aira-stripes-march { animation: aira-stripes-march 0.6s linear infinite; }
+@keyframes aira-stripes-march {
+  from { background-position: 0 0; }
+  to { background-position: 28px 0; }
+}

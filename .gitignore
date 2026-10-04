@@ -141,3 +141,6 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# Testimonial drafts for colleagues to approve (not for publishing)
+testimonial-requests.md
