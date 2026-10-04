@@ -64,7 +64,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
       <img
         src={testimonial.imgSrc}
         alt={`${testimonial.by.split(",")[0]}`}
-        className="bg-muted mb-3 h-10 w-9 shrink-0 object-cover object-top sm:mb-4 sm:h-14 sm:w-12"
+        className="bg-muted mb-3 h-10 w-9 shrink-0 object-cover object-top sm:mb-4 sm:h-13 sm:w-12"
         style={{
           boxShadow: "3px 3px 0px hsl(var(--background))",
         }}

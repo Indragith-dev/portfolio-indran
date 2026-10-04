@@ -289,3 +289,12 @@
   from { background-position: 0 0; }
   to { background-position: 28px 0; }
 }
+
+/* Hide the browser window's scrollbar (the project detail pages scroll the
+   window); scrolling still works. Other pages hide theirs with no-scrollbar. */
+html {
+  scrollbar-width: none;
+}
+html::-webkit-scrollbar {
+  display: none;
+}

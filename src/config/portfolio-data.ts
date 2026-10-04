@@ -237,7 +237,7 @@ export const projects: Project[] = [
       "Multi-tenant modular monolith on .NET 9 that unifies strategic planning, project management and task management, built with CQRS and event-driven messaging.",
     overview:
       "ISOP brings an organisation's strategic planning, project management and task management into a single multi-tenant platform. It is a modular monolith on .NET 9 and PostgreSQL, with modules talking to each other through events over Wolverine and RabbitMQ.",
-    role: "Leading backend development. I own the Project Management module and have built major parts of Task Management.",
+    role: "Led backend development. I owned the Project Management module and built major parts of Task Management.",
     highlights: [
       "Multi-tenant modular monolith on .NET 9 and PostgreSQL",
       "CQRS with event-driven messaging over Wolverine and RabbitMQ",
@@ -257,16 +257,16 @@ export const projects: Project[] = [
     image: "/projects/isop.svg",
     company: "MAV-S Innovations",
     date: "2025",
-    status: "in progress",
+    status: "completed",
   },
   {
     id: "axiom",
     title: "AXIOM — Product Subscription Platform",
     summary:
-      "Subscription platform for the company's product suite, with SSO sign-in and tenant-based setup for multi-product access. Built independently.",
+      "Subscription platform for the company's product suite, with SSO sign-in and tenant-based setup for multi-product access. Being built independently.",
     overview:
       "AXIOM is the subscription platform that showcases MAV-S Innovations' product suite, including ISOP and MyHR. Customers sign in once and get access to the products set up for their tenant.",
-    role: "Built it independently, from the modular monolith backend to the React frontend.",
+    role: "Building it independently, from the modular monolith backend to the React frontend.",
     highlights: [
       "Subscription-based platform for the company's product suite (ISOP, MyHR and others)",
       "Modular monolith backend on .NET with PostgreSQL",
@@ -277,16 +277,17 @@ export const projects: Project[] = [
     tags: ["SaaS", ".NET", "React", "PostgreSQL"],
     image: "/projects/axiom.svg",
     company: "MAV-S Innovations",
-    status: "completed",
+    date: "2026",
+    status: "in progress",
   },
   {
     id: "grn",
     title: "GRN — Invoice Management System",
     summary:
-      "Pulls invoices from email, parses and analyses them, cross-verifies the data against Oracle and routes them through approval to payment. Built independently.",
+      "Pulls invoices from email, parses and analyses them, cross-verifies the data against Oracle and routes them through approval to payment. Being built independently.",
     overview:
       "GRN automates invoice handling. Invoices that arrive by email are picked up, parsed and analysed, then checked against data in Oracle before an approval workflow routes them through to payment.",
-    role: "Built it independently on .NET and React using Clean Architecture.",
+    role: "Building it independently on .NET and React using Clean Architecture.",
     highlights: [
       "Pulls invoices straight from email",
       "Parses and analyses invoice data automatically",
@@ -305,7 +306,8 @@ export const projects: Project[] = [
     tags: ["Automation", ".NET", "React", "PostgreSQL"],
     image: "/projects/grn.svg",
     company: "MAV-S Innovations",
-    status: "completed",
+    date: "2026",
+    status: "in progress",
   },
   {
     id: "hrms",
