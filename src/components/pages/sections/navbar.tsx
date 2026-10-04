@@ -90,7 +90,7 @@ const Navbar = () => {
         {/* Logo: back to the console home page */}
         <Link
           href="/"
-          aria-label="Go to home"
+          aria-label="Go to start page"
           className="group relative inline-flex items-center"
         >
           <div className="absolute -top-2 -left-2 h-4 w-4 border-t-2 border-l-2 duration-200 group-hover:-top-1 group-hover:-left-1" />

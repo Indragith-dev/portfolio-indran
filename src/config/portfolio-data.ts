@@ -130,9 +130,9 @@ export const aboutBadges = [
 /* ── Projects ─────────────────────────────────────────────────────────────── */
 
 /**
- * Work projects. They were built at or for companies, so there is no public
- * code or live demo: each card links to its own page at
- * /portfolio/projects/<id> with the details below.
+ * Each card links to its own page at /portfolio/projects/<id> with the details
+ * below. Work projects were built at or for companies, so they have no public
+ * code or demo; set `github` only for projects with a public repo.
  */
 export type Project = {
   /** URL slug, and the id AIRA uses to scroll to the card (see src/lib/aira.ts). */
@@ -152,12 +152,39 @@ export type Project = {
   /** Extra photos for the project page. */
   gallery?: { src: string; caption: string }[];
   company?: string;
+  /** Public repo; shows a "View code" button. */
+  github?: string;
   /** Leave empty when unknown; the card then shows only the status. */
   date?: string;
   status: "completed" | "in progress";
 };
 
 export const projects: Project[] = [
+  {
+    id: "aira",
+    title: "AIRA — AI Portfolio Assistant",
+    summary:
+      "The AI assistant on this portfolio. It answers questions about my work from a curated profile, streams its replies, moves the page to what it's talking about, and powers the contact form.",
+    overview:
+      "AIRA is the chatbot built into this site. Visitors ask about my projects, skills or experience and get answers streamed in real time from Google Gemini, grounded strictly in my profile; anything off-topic gets a polite, fixed reply. It can also act on the page, scrolling to a project, highlighting a skill or opening a section, and the same backend delivers the contact form by email.",
+    role:
+      "Designed and built it end to end: the serverless API on Vercel, the prompt and guardrails, and the animated robot chat in Next.js.",
+    highlights: [
+      "Serverless API on Vercel that streams Gemini replies to the browser as they're written",
+      "Answers only from a curated profile, with a fixed reply for off-topic questions and prompt-injection attempts",
+      "Function calling to scroll to projects, highlight skills and open sections of the page",
+      "Falls back to a second Gemini model when the first is busy or out of quota",
+      "Per-visitor rate limiting and an allowlist of sites that may call the API",
+      "Contact form delivered by email through Resend, with a hidden field to catch bots",
+      "Animated robot cut from layered artwork: it peeks in, waves, thinks, talks and walks, with sound effects",
+    ],
+    stack: ["TypeScript", "Google Gemini", "Vercel Functions", "Next.js", "React", "Motion", "Tailwind CSS", "Resend"],
+    tags: ["AI", "TypeScript", "Next.js", "Serverless"],
+    image: "/projects/aira.svg",
+    github: "https://github.com/Indragith-dev/AI-Portfolio-chatbot",
+    date: "2026",
+    status: "completed",
+  },
   {
     id: "dms",
     title: "Document Management System",
@@ -282,6 +309,10 @@ export const tagColors: Record<string, string> = {
   Mobile: "bg-pink-500/10 text-pink-600 border-pink-500/30",
   SaaS: "bg-violet-500/10 text-violet-600 border-violet-500/30",
   Automation: "bg-amber-500/10 text-amber-600 border-amber-500/30",
+  AI: "bg-fuchsia-500/10 text-fuchsia-600 border-fuchsia-500/30",
+  TypeScript: "bg-blue-500/10 text-blue-500 border-blue-500/30",
+  "Next.js": "bg-zinc-500/10 text-zinc-500 border-zinc-500/30",
+  Serverless: "bg-lime-500/10 text-lime-600 border-lime-500/30",
 };
 
 /* ── Awards ───────────────────────────────────────────────────────────────── */

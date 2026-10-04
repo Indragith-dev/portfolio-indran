@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" role="img" aria-label="AIRA — AI Portfolio Assistant cover">
+  <defs>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" fill="none" stroke="#2a2a33" stroke-width="1"/>
+    </pattern>
+    <radialGradient id="glow" cx="50%" cy="45%" r="55%">
+      <stop offset="0" stop-color="#e879f9" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#e879f9" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="800" height="450" fill="#17171d"/>
+  <rect y="38" width="800" height="412" fill="url(#grid)"/>
+  <rect y="38" width="800" height="412" fill="url(#glow)"/>
+  <rect width="800" height="38" fill="#24242c"/>
+  <circle cx="26" cy="19" r="6" fill="#ff5f57"/>
+  <circle cx="48" cy="19" r="6" fill="#febc2e"/>
+  <circle cx="70" cy="19" r="6" fill="#28c840"/>
+  <text x="400" y="23" text-anchor="middle" font-family="monospace" font-size="13" fill="#6b6b78">aira · open source</text>
+  <text x="400" y="225" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-weight="bold" font-size="104" fill="#f4f4f5" letter-spacing="4">AIRA</text>
+  <rect x="360" y="252" width="80" height="4" rx="2" fill="#e879f9"/>
+  <text x="400" y="300" text-anchor="middle" font-family="system-ui, sans-serif" font-size="24" fill="#d4d4d8">AI Portfolio Assistant</text>
+  <text x="400" y="336" text-anchor="middle" font-family="monospace" font-size="16" fill="#e879f9">ask · stream · act</text>
+  <text x="400" y="420" text-anchor="middle" font-family="monospace" font-size="13" fill="#52525b">open source · code on GitHub</text>
+</svg>

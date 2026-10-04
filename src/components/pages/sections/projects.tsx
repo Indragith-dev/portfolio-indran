@@ -7,7 +7,7 @@ import HeadingLine from "@/components/ui/heading-line";
 import { projects, tagColors } from "@/config/portfolio-data";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Github } from "lucide-react";
 import { motion } from "motion/react";
 import Link from "next/link";
 
@@ -112,7 +112,7 @@ const Projects = () => {
                   ))}
                 </div>
 
-                {/* Work projects are private: no code or demo, just a details page */}
+                {/* Work projects are private, so only open-source ones get "View code" */}
                 <div className="flex flex-wrap gap-3">
                   <Button
                     asChild
@@ -125,6 +125,20 @@ const Projects = () => {
                       <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover/btn:translate-x-0.5" />
                     </Link>
                   </Button>
+                  {project.github && (
+                    <Button
+                      asChild
+                      variant="outline"
+                      size="lg"
+                      className="group/btn border-2 font-medium"
+                    >
+                      <a href={project.github} target="_blank" rel="noopener noreferrer">
+                        <Github className="mr-2 h-4 w-4" />
+                        View code
+                        <ArrowUpRight className="ml-1 h-3 w-3 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
+                      </a>
+                    </Button>
+                  )}
                 </div>
 
                 {/*  slanted lines */}

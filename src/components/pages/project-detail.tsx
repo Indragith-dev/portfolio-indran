@@ -7,6 +7,8 @@ import {
   ArrowRight,
   ArrowUpRight,
   CheckCircle2,
+  Github,
+  House,
   Lock,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -40,15 +42,23 @@ export default function ProjectDetail({
       <main className="before:border-border after:border-border relative z-10 min-h-screen before:absolute before:top-0 before:left-0 before:h-full before:w-12 before:border-r before:bg-[linear-gradient(-135deg,_var(--color-border)_25%,_transparent_25%,_transparent_50%,_var(--color-border)_50%,_var(--color-border)_75%,_transparent_75%,_transparent)] before:bg-[length:5px_5px] after:absolute after:top-0 after:right-0 after:h-full after:w-12 after:border-l after:bg-[linear-gradient(135deg,_var(--color-border)_25%,_transparent_25%,_transparent_50%,_var(--color-border)_50%,_var(--color-border)_75%,_transparent_75%,_transparent)] after:bg-[length:5px_5px] max-md:before:hidden max-md:after:hidden md:px-12">
         {/* Top bar */}
         <nav className="flex items-center justify-between border-b px-4 py-2.5 md:px-8">
-          <Link href="/" aria-label="Go to home">
+          <Link href="/" aria-label="Go to start page">
             <Logo className="w-14" hover />
           </Link>
-          <Button asChild variant="outline" size="sm" className="group border-2 font-mono text-xs">
-            <Link href="/portfolio#projects">
-              <ArrowLeft className="transition-transform group-hover:-translate-x-0.5" />
-              All projects
-            </Link>
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button asChild variant="outline" size="sm" className="group border-2 font-mono text-xs">
+              <Link href="/portfolio">
+                <House />
+                Home
+              </Link>
+            </Button>
+            <Button asChild variant="outline" size="sm" className="group border-2 font-mono text-xs">
+              <Link href="/portfolio#projects">
+                <ArrowLeft className="transition-transform group-hover:-translate-x-0.5" />
+                All projects
+              </Link>
+            </Button>
+          </div>
         </nav>
 
         <div className="md:px-8">
@@ -187,21 +197,38 @@ export default function ProjectDetail({
                 <Block title="Details">
                   <dl className="divide-y rounded-lg border text-sm">
                     {project.company && <Detail label="Company" value={project.company} />}
+                    <Detail label="Code" value={project.github ? "Open source" : "Private"} />
                     {project.date && <Detail label="Year" value={project.date} />}
                     <Detail label="Status" value={project.status} />
                   </dl>
                 </Block>
 
-                <div className="bg-muted/20 flex gap-3 rounded-lg border-2 border-dashed p-4 text-sm">
-                  <Lock className="text-muted-foreground mt-0.5 size-4 shrink-0" />
-                  <p className="text-muted-foreground leading-relaxed">
-                    Built for a company and its clients, so the code and live demo
-                    are private. Happy to walk through the details in a call.
-                  </p>
-                </div>
+                {!project.github && (
+                  <div className="bg-muted/20 flex gap-3 rounded-lg border-2 border-dashed p-4 text-sm">
+                    <Lock className="text-muted-foreground mt-0.5 size-4 shrink-0" />
+                    <p className="text-muted-foreground leading-relaxed">
+                      Built for a company and its clients, so the code and live demo
+                      are private. Happy to walk through the details in a call.
+                    </p>
+                  </div>
+                )}
 
                 <div className="flex flex-col gap-3">
-                  <Button asChild size="lg" className="group border-2 font-medium">
+                  {project.github && (
+                    <Button asChild size="lg" className="group border-2 font-medium">
+                      <a href={project.github} target="_blank" rel="noopener noreferrer">
+                        <Github />
+                        View code on GitHub
+                        <ArrowUpRight className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                      </a>
+                    </Button>
+                  )}
+                  <Button
+                    asChild
+                    size="lg"
+                    variant={project.github ? "outline" : "default"}
+                    className="group border-2 font-medium"
+                  >
                     <Link href="/portfolio#contact">
                       Talk about this project
                       <ArrowUpRight className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />

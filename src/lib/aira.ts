@@ -22,6 +22,7 @@ const HIGHLIGHT_MS = 2500;
  * portfolio-data.ts. A null target falls back to the Projects section.
  */
 const PROJECT_TARGETS: Record<string, string | null> = {
+  aira: "aira",
   dms: "dms",
   isop: "isop",
   axiom: "axiom",
