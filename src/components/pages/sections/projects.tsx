@@ -7,8 +7,9 @@ import HeadingLine from "@/components/ui/heading-line";
 import { projects, tagColors } from "@/config/portfolio-data";
 import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
-import { Github, ArrowUpRight, ExternalLink } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { motion } from "motion/react";
+import Link from "next/link";
 
 const Projects = () => {
   return (
@@ -62,10 +63,14 @@ const Projects = () => {
               <div className="relative flex flex-col justify-center overflow-hidden p-8 md:p-12 lg:p-16">
                 {/* Date & Status */}
                 <div className="mb-6 flex flex-wrap items-center gap-3">
-                  <time className="text-muted-foreground font-mono text-xs">
-                    {project.date}
-                  </time>
-                  <div className="bg-border h-4 w-px" />
+                  {project.date && (
+                    <>
+                      <time className="text-muted-foreground font-mono text-xs">
+                        {project.date}
+                      </time>
+                      <div className="bg-border h-4 w-px" />
+                    </>
+                  )}
                   <div className="inline-flex items-center gap-1.5">
                     <div
                       className={cn(
@@ -91,7 +96,7 @@ const Projects = () => {
 
                 {/* Description */}
                 <p className="text-muted-foreground mb-6 text-sm leading-relaxed md:text-base">
-                  {project.description}
+                  {project.summary}
                 </p>
 
                 {/* Tags  */}
@@ -107,42 +112,18 @@ const Projects = () => {
                   ))}
                 </div>
 
-                {/*  Buttons */}
+                {/* Work projects are private: no code or demo, just a details page */}
                 <div className="flex flex-wrap gap-3">
                   <Button
                     asChild
                     variant="default"
                     size="lg"
                     className="group/btn relative border-2 font-medium"
-                    disabled={!project.github}
                   >
-                    <a
-                      href={project.github || undefined}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Github className="mr-2 h-4 w-4" />
-                      View Code
-                      <ArrowUpRight className="ml-1 h-3 w-3 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
-                    </a>
-                  </Button>
-
-                  <Button
-                    asChild
-                    variant="outline"
-                    size="lg"
-                    className="group/btn border-2 font-medium"
-                    disabled={!project.live}
-                  >
-                    <a
-                      href={project.live || undefined}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <ExternalLink className="mr-2 h-4 w-4" />
-                      Live Demo
-                      <ArrowUpRight className="ml-1 h-3 w-3 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
-                    </a>
+                    <Link href={`/portfolio/projects/${project.id}`}>
+                      View details
+                      <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover/btn:translate-x-0.5" />
+                    </Link>
                   </Button>
                 </div>
 

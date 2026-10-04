@@ -4,11 +4,12 @@ import { IntroSplash } from "../shared/intro-splash";
 import Navbar from "./sections/navbar";
 import Hero from "./sections/hero";
 import Projects from "./sections/projects";
+import Awards from "./sections/awards";
+import LinkedInPosts from "./sections/linkedin-posts";
 import About from "./sections/about";
 import Footer from "./sections/footer";
 import Contact from "./sections/contact";
 import Stats from "./sections/stats";
-import { Testimonials } from "./sections/testimonials";
 
 const PortfolioPage = () => {
   return (
@@ -28,8 +29,11 @@ const PortfolioPage = () => {
               <Hero />
               <Projects />
               <About />
+              <Awards />
+              <LinkedInPosts />
               <Stats />
-              <Testimonials />
+              {/* Testimonials (sections/testimonials.tsx) is hidden until there are
+                  real quotes in portfolio-data.ts — the current ones are placeholders. */}
               <Contact />
               <Footer />
             </div>

@@ -13,6 +13,7 @@ import { useIsSoundEnabled } from "@/store/use-sound-enabled";
 const NAV_LINKS = [
   { id: "home", label: "Home" },
   { id: "about", label: "About" },
+  { id: "awards", label: "Awards" },
   { id: "projects", label: "Projects" },
   { id: "stats", label: "Stats" },
   { id: "contact", label: "Contact" },

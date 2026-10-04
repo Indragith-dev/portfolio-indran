@@ -24,7 +24,7 @@ export const profile = {
   /** Shown in the hero badge — the sharper positioning line. */
   specialisation: ".NET | React",
   tagline:
-    "Full Stack Developer with 4+ years building enterprise applications end to end — React and TypeScript on the front, C# and ASP.NET Core on the back, with SQL, Docker and AWS holding it together.",
+    "Full Stack Developer with 4+ years and 25+ projects delivered — React and TypeScript on the front, C# and ASP.NET Core on the back, with SQL, Docker and AWS taking it all the way to production.",
   availableForWork: true,
   resumeUrl: "/resume/Indragith_Resume.pdf",
   avatar: "/indran-sketch.jpg",
@@ -36,8 +36,7 @@ export const profile = {
 /* ── Site metadata ────────────────────────────────────────────────────────── */
 
 export const siteMeta = {
-  /** TODO: set this to your live domain before deploying. */
-  url: "http://localhost:3000",
+  url: "https://portfolio-indran.vercel.app",
   title: "Indragith N S",
   description:
     "Full Stack Developer specialising in React, TypeScript, C# and ASP.NET Core. Enterprise applications across frontend, backend, databases, cloud deployment and CI/CD.",
@@ -72,7 +71,7 @@ export const social = {
 
 export const heroStats = [
   { label: "Years of Experience", value: profile.yearsOfExperience },
-  { label: "Projects Delivered", value: 10 },
+  { label: "Projects Delivered", value: 25 },
   { label: "Enterprise Clients", value: 6 },
   { label: "Technologies Used", value: 20 },
 ];
@@ -85,7 +84,7 @@ export const aboutHeading = ["Meet the Developer,", "Not Just the Code"];
 export const aboutParagraphs = [
   {
     before:
-      "I started out in frontend and kept walking down the stack until I could own a feature end to end",
+      "I started in frontend at K2web, went full stack at KodNest, and now own features end to end at MAV-S Innovations",
     gif: "/gifs/cate%20coding.gif",
     gifAlt: "cat intensely coding",
     after:
@@ -93,7 +92,7 @@ export const aboutParagraphs = [
   },
   {
     before:
-      "Most of my work is enterprise software: document management, HR portals, multi-tenant operations platforms",
+      "25+ projects in, most of my work is enterprise software: document management, invoice automation, HR portals and multi-tenant platforms",
     gif: "/gifs/kawaii%20cat%20GIF.gif",
     gifAlt: "kawaii cat cheering",
     after: "— the kind with real workflows, real approvals and real users.",
@@ -103,14 +102,15 @@ export const aboutParagraphs = [
       "I like the architectural side of backend work: Clean Architecture, modular monoliths, CQRS, EF Core",
     gif: "/gifs/happy%20one%20piece%20GIF.gif",
     gifAlt: "happy One Piece vibe",
-    after: "and event-driven messaging with RabbitMQ and Wolverine.",
+    after:
+      "and event-driven messaging with RabbitMQ and Wolverine — planned together with the team, Agile style.",
   },
   {
     before:
-      "I have shipped past the repo too — Docker, AWS and CI/CD, including an on-site deployment into an air-gapped environment in Abu Dhabi",
+      "I ship past the repo too — Docker, AWS and CI/CD, and an on-site deployment inside a secure data centre vault in Abu Dhabi",
     gif: "/gifs/One%20Piece%20GIF%20by%20TOEI%20Animation%20UK.gif",
     gifAlt: "One Piece crew teamwork",
-    after: "that I handled independently.",
+    after: "that I set up end to end, servers and all.",
   },
   {
     before: "Got a messy brief or a half-baked idea?",
@@ -123,47 +123,147 @@ export const aboutParagraphs = [
 /** Small pills on the about card, next to the availability badge. */
 export const aboutBadges = [
   `${profile.yearsOfExperience}+ Years`,
+  "25+ Projects",
   ".NET + React",
 ];
 
 /* ── Projects ─────────────────────────────────────────────────────────────── */
 
-export const projects = [
+/**
+ * Work projects. They were built at or for companies, so there is no public
+ * code or live demo: each card links to its own page at
+ * /portfolio/projects/<id> with the details below.
+ */
+export type Project = {
+  /** URL slug, and the id AIRA uses to scroll to the card (see src/lib/aira.ts). */
+  id: string;
+  title: string;
+  /** One or two sentences for the card. */
+  summary: string;
+  /** Opening paragraph on the project page. */
+  overview: string;
+  /** What Indragith did on it. */
+  role: string;
+  highlights: string[];
+  stack: string[];
+  tags: string[];
+  /** Cover image; projects are private, so these are illustrated covers. */
+  image: string;
+  /** Extra photos for the project page. */
+  gallery?: { src: string; caption: string }[];
+  company?: string;
+  /** Leave empty when unknown; the card then shows only the status. */
+  date?: string;
+  status: "completed" | "in progress";
+};
+
+export const projects: Project[] = [
   {
-    /** AIRA scrolls to a project by this id (see src/lib/aira.ts). */
     id: "dms",
     title: "Document Management System",
-    description:
-      "Enterprise DMS pairing a React vendor portal with a SharePoint internal portal over an ASP.NET Core and SQL Server backend. Multi-stage document review and approval workflows, JWT authentication and Hangfire background jobs. Deployed on-site into an air-gapped environment in Abu Dhabi.",
+    summary:
+      "Enterprise DMS pairing a React vendor portal with an internal SharePoint portal for multi-stage document review and approval, deployed on-site in a secure data centre in Abu Dhabi.",
+    overview:
+      "A full stack document management platform for an enterprise client. External vendors submit and track documents through a React portal, while internal teams review and approve them in a SharePoint portal through multi-stage workflows.",
+    role:
+      "Built the platform end to end, from the React vendor portal and SharePoint portal to the ASP.NET Core API, then travelled to Abu Dhabi and deployed it on the client's air-gapped servers on my own.",
+    highlights: [
+      "React vendor portal with JWT authentication",
+      "Internal SharePoint (SPFx) portal driving multi-stage review and approval workflows",
+      "Clean Architecture backend on ASP.NET Core, EF Core and SQL Server",
+      "SharePoint integration through PnP, with Hangfire for background jobs",
+      "Set up and deployed on-site on an air-gapped, on-premise server inside a secure data centre vault in Abu Dhabi, handling the full server configuration in person",
+    ],
+    stack: ["React", "TypeScript", "ASP.NET Core", "EF Core", "SQL Server", "SharePoint SPFx", "PnP", "Hangfire", "JWT"],
     tags: ["Enterprise", ".NET", "React", "SharePoint"],
-    github: null as string | null,
-    live: null as string | null,
-    /** TODO: add a real screenshot to /public/projects and update this path. */
-    image: "/projects/placeholder-1.svg",
+    image: "/projects/dms.svg",
+    gallery: [
+      { src: "/gallery/linkedin-abudhabi.jpg", caption: "On site at the data centre in Abu Dhabi for the deployment" },
+    ],
+    company: "MAV-S Innovations",
     date: "2024",
     status: "completed",
   },
   {
     id: "isop",
     title: "ISOP — Integrated Strategy & Operations Platform",
-    description:
-      "Multi-tenant modular monolith on .NET 9 with CQRS and event-driven messaging over RabbitMQ and Wolverine. I own the Project Management module — meetings, phases, risks, issues and vendors — and build Task Management features across workspaces, dashboards and tasks.",
+    summary:
+      "Multi-tenant modular monolith on .NET 9 that unifies strategic planning, project management and task management, built with CQRS and event-driven messaging.",
+    overview:
+      "ISOP brings an organisation's strategic planning, project management and task management into a single multi-tenant platform. It is a modular monolith on .NET 9 and PostgreSQL, with modules talking to each other through events over Wolverine and RabbitMQ.",
+    role:
+      "Leading backend development. I own the Project Management module and have built major parts of Task Management.",
+    highlights: [
+      "Multi-tenant modular monolith on .NET 9 and PostgreSQL",
+      "CQRS with event-driven messaging over Wolverine and RabbitMQ",
+      "Owns the Project Management module: meetings, phases, risks, issues and vendors",
+      "Built major parts of Task Management: workspaces, dashboards and tasks",
+    ],
+    stack: [".NET 9", "C#", "PostgreSQL", "EF Core", "Wolverine", "RabbitMQ", "CQRS"],
     tags: ["Architecture", ".NET", "PostgreSQL", "CQRS"],
-    github: null as string | null,
-    live: null as string | null,
-    image: "/projects/placeholder-2.svg",
+    image: "/projects/isop.svg",
+    company: "MAV-S Innovations",
     date: "2025",
     status: "in progress",
   },
   {
+    id: "axiom",
+    title: "AXIOM — Product Subscription Platform",
+    summary:
+      "Subscription platform for the company's product suite, with SSO sign-in and tenant-based setup for multi-product access. Built independently.",
+    overview:
+      "AXIOM is the subscription platform that showcases MAV-S Innovations' product suite, including ISOP and MyHR. Customers sign in once and get access to the products set up for their tenant.",
+    role: "Built it independently, from the modular monolith backend to the React frontend.",
+    highlights: [
+      "Subscription-based platform for the company's product suite (ISOP, MyHR and others)",
+      "Modular monolith backend on .NET with PostgreSQL",
+      "Single sign-on (SSO) across products",
+      "Tenant-based setup for multi-product access",
+    ],
+    stack: [".NET", "C#", "React", "PostgreSQL"],
+    tags: ["SaaS", ".NET", "React", "PostgreSQL"],
+    image: "/projects/axiom.svg",
+    company: "MAV-S Innovations",
+    status: "completed",
+  },
+  {
+    id: "grn",
+    title: "GRN — Invoice Management System",
+    summary:
+      "Pulls invoices from email, parses and analyses them, cross-verifies the data against Oracle and routes them through approval to payment. Built independently.",
+    overview:
+      "GRN automates invoice handling. Invoices that arrive by email are picked up, parsed and analysed, then checked against data in Oracle before an approval workflow routes them through to payment.",
+    role: "Built it independently on .NET and React using Clean Architecture.",
+    highlights: [
+      "Pulls invoices straight from email",
+      "Parses and analyses invoice data automatically",
+      "Cross-verifies invoice data against Oracle",
+      "Approval workflow that routes verified invoices through to payment",
+      "Clean Architecture on .NET with PostgreSQL",
+    ],
+    stack: [".NET", "C#", "React", "PostgreSQL", "Oracle", "Clean Architecture"],
+    tags: ["Automation", ".NET", "React", "PostgreSQL"],
+    image: "/projects/grn.svg",
+    company: "MAV-S Innovations",
+    status: "completed",
+  },
+  {
     id: "hrms",
     title: "Employee Portal & HRMS",
-    description:
-      "A production employee platform delivered as both a React web app and a Flutter mobile app — responsive employee portal, activity feeds, real-time messaging and an AI chatbot, with BLoC state management, Hive local storage and go_router on mobile.",
+    summary:
+      "A production employee platform delivered as both a React web app and a Flutter mobile app, with activity feeds, real-time messaging and an AI chatbot.",
+    overview:
+      "A production employee platform delivered on two fronts: a responsive React web portal and a Flutter mobile app, covering the employee portal, activity feeds, real-time messaging and an AI chatbot.",
+    role: "Worked across both the React web app and the Flutter mobile app.",
+    highlights: [
+      "Responsive employee portal in React",
+      "Activity feeds and real-time messaging",
+      "AI chatbot built into the platform",
+      "Flutter mobile app with BLoC state management, Hive local storage and go_router",
+    ],
+    stack: ["React", "Flutter", "Dart", "BLoC", "Hive", "go_router"],
     tags: ["React", "Flutter", "Mobile", "Enterprise"],
-    github: null as string | null,
-    live: null as string | null,
-    image: "/projects/placeholder-3.svg",
+    image: "/projects/hrms.svg",
     date: "2024",
     status: "completed",
   },
@@ -180,7 +280,105 @@ export const tagColors: Record<string, string> = {
   CQRS: "bg-emerald-500/10 text-emerald-600 border-emerald-500/30",
   Flutter: "bg-sky-500/10 text-sky-600 border-sky-500/30",
   Mobile: "bg-pink-500/10 text-pink-600 border-pink-500/30",
+  SaaS: "bg-violet-500/10 text-violet-600 border-violet-500/30",
+  Automation: "bg-amber-500/10 text-amber-600 border-amber-500/30",
 };
+
+/* ── Awards ───────────────────────────────────────────────────────────────── */
+
+/** Shown in the Awards section; the featured award gets the photo. */
+export const awards = {
+  featured: {
+    title: "High Achiever Award",
+    organisation: "MAV-S Innovations",
+    year: "2025",
+    description:
+      "Recognised by MAV-S Innovations for delivering production-ready software across its enterprise projects.",
+    image: "/gallery/achieveraward.jpg",
+    imageAlt: "Indragith receiving the High Achiever Award cheque at MAV-S Innovations",
+  },
+  /** Other recognitions and roles from the resume. */
+  others: [
+    { title: "IT Support Head", organisation: "MAV-S Innovations" },
+    { title: "Best Event Coordinator", organisation: "Office Event Coordinator Head" },
+    { title: "Executive Member", organisation: "Skill Development Committee" },
+    { title: "Member", organisation: "Technopark AWS Community" },
+  ],
+};
+
+/* ── LinkedIn posts ──────────────────────────────────────────────────────── */
+
+/**
+ * Shown as theme-aware cards in the LinkedIn section (LinkedIn's own embeds
+ * are always white and can't follow the site theme). Copy the text from the
+ * post, save its image to /public/gallery, and link the post's URL.
+ */
+export const linkedinProfile = {
+  headline:
+    "Software Developer @ MAV-S Innovations | React.js | ASP.NET Core | TypeScript | Full Stack Development",
+};
+
+export const linkedinPosts = [
+  {
+    url: "https://www.linkedin.com/feed/update/urn:li:share:7414028215641518080/",
+    date: "Jan 2026",
+    text: `I’m happy to share that I’ve received the High Achiever Award from MAV-S Innovations.
+
+This recognition truly means a lot to me and motivates me to continue pushing my limits as a Software Engineer.
+I would like to extend my sincere thanks to our Founder & Lead, Minhaj Raheem, for his constant guidance, trust, and support. Working under such leadership has been a great learning experience and has helped me grow both professionally and personally. I’m also grateful to my Manager, Ajesh Anand, for his continuous support, mentorship, and encouragement, which have played a key role in this achievement.
+
+A big thank you to my team as well—this wouldn’t have been possible without the collaborative and supportive environment at MAV-S Innovations.
+
+Looking forward to achieving many more milestones together.`,
+    tags: ["HighAchieverAward", "MAVSInnovations", "SoftwareEngineer", "TeamWork"],
+    image: "/gallery/linkedin-award.jpg",
+    imageAlt: "Indragith receiving the High Achiever Award at MAV-S Innovations",
+  },
+  {
+    url: "https://www.linkedin.com/feed/update/urn:li:ugcPost:7480694445533745152/",
+    date: "Jul 2026",
+    text: `Grateful for an incredible milestone in my professional journey!
+
+I recently had the opportunity to visit Abu Dhabi, UAE, to deploy a project that our team built for a client inside a highly secure Data Center Vault.
+
+It was a great experience setting up the production environment, configuring the required servers, and successfully deploying the solution. This opportunity gave me valuable hands-on exposure to enterprise deployment in a secure data center environment.
+
+A heartfelt thank you to the founders of MAV-S Innovations for placing their trust in me and giving me this incredible opportunity. I'm truly grateful for the confidence, support, and exposure that made this experience possible.
+
+A special thanks to my manager, Ajesh Anand, for his constant guidance, encouragement, and trust throughout this journey. Your mentorship and support played a significant role in making this experience both successful and memorable.
+
+Proud to have been part of this milestone and thankful to everyone who contributed to making it a success.`,
+    tags: ["AbuDhabi", "DataCenter", "ProductionDeployment", "SQLServer"],
+    image: "/gallery/linkedin-abudhabi.jpg",
+    imageAlt: "Data Center Vault reception in Abu Dhabi during the deployment",
+  },
+  {
+    url: "https://www.linkedin.com/feed/update/urn:li:share:7477022126328242176/",
+    date: "Jun 2026",
+    text: `Planning, Collaboration & Delivery - The Agile Mindset
+
+Building successful software starts long before writing code-it begins with collaboration, clear communication, and shared understanding.
+
+Working in an Agile environment has reinforced that Planning Poker is more than estimating story points. It's an opportunity for the team to discuss requirements, uncover complexities, identify potential risks, and align on the best approach before development begins.
+
+As a Full Stack Developer, I enjoy contributing throughout the entire development lifecycle-from understanding business requirements and participating in sprint planning to developing scalable backend services, building intuitive frontend experiences, and delivering value incrementally.
+
+Being part of Agile teams has strengthened my ability to:
+
+- Collaborate effectively with cross-functional teams
+- Participate in sprint planning, estimation, and backlog discussions
+- Break down complex requirements into deliverable tasks
+- Adapt to changing priorities while maintaining quality
+- Continuously learn, improve, and deliver value in every sprint
+
+One of the biggest lessons Agile has taught me is that great software is built through collaboration - not in isolation. Strong communication, shared ownership, and continuous improvement are what turn ideas into successful products.
+
+Always learning, always improving, and always looking forward to building impactful solutions.`,
+    tags: ["Agile", "Scrum", "PlanningPoker", "FullStackDeveloper"],
+    image: "/gallery/linkedin-agile.jpg",
+    imageAlt: "Agile Planning Poker cards held up in front of the MAV-S Innovations sign",
+  },
+];
 
 /* ── Tech stack ───────────────────────────────────────────────────────────── */
 

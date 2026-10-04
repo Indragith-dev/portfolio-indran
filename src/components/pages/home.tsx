@@ -353,10 +353,7 @@ const HomePage = () => {
             // setCurrentConsoleNavigation("portfolio")
           },
           resume: () => {
-            const a = document.createElement("a");
-            a.href = profile.resumeUrl;
-            a.download = "";
-            a.click();
+            window.open(profile.resumeUrl, "_blank", "noopener,noreferrer");
           },
         };
 

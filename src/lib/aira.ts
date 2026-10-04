@@ -19,20 +19,30 @@ const HIGHLIGHT_MS = 2500;
 
 /**
  * Project ids the backend can send, mapped to the `id` of a project in
- * portfolio-data.ts. Projects that aren't on the page (grn, axiom) fall back
- * to the Projects section.
+ * portfolio-data.ts. A null target falls back to the Projects section.
  */
 const PROJECT_TARGETS: Record<string, string | null> = {
   dms: "dms",
   isop: "isop",
+  axiom: "axiom",
+  grn: "grn",
   hrms: "hrms",
-  grn: null,
-  axiom: null,
 };
+
+/** Section ids the backend can send with show_section (element ids on the page). */
+const SECTIONS = ["projects", "awards", "linkedin", "about", "stats", "contact"];
 
 export function handleAiraAction({ name, args }: AiraAction) {
   if (name === "focus_project") focusProject(String(args.id ?? ""));
   else if (name === "highlight_skill") highlightSkill(String(args.name ?? ""));
+  else if (name === "show_section") showSection(String(args.section ?? ""));
+}
+
+function showSection(id: string) {
+  if (!SECTIONS.includes(id)) return;
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 function focusProject(id: string) {

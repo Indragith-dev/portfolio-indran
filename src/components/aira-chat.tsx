@@ -17,8 +17,9 @@ const SUGGESTIONS = [
   "How can I contact him?",
 ];
 
-const BUBBLE_KEY = "aira_bubble_dismissed";
 const BUBBLE_DELAY_MS = 1200;
+/** Grace period so moving the mouse from the robot onto the bubble keeps it open. */
+const HOVER_HIDE_DELAY_MS = 300;
 const WALK_MS = 1100;
 /** Walking back is slower: it's sad to go. */
 const LEAVE_MS = 1700;
@@ -65,11 +66,17 @@ export default function AiraChat({
   onAction?: (action: AiraAction) => void;
 }) {
   const pathname = usePathname();
-  const onPortfolio = pathname.startsWith("/portfolio");
+  // Only the main portfolio page, not the project detail pages under it.
+  const onPortfolio = pathname === "/portfolio";
   const { messages, loading, send } = useAira(onAction);
   const [phase, setPhase] = useState<Phase>("hidden");
   const [input, setInput] = useState("");
-  const [showBubble, setShowBubble] = useState(false);
+  // Speech bubble: shown once AIRA has arrived and kept until its X is
+  // pressed; after that it only shows while the robot or bubble is hovered.
+  const [bubbleReady, setBubbleReady] = useState(false);
+  const [bubbleDismissed, setBubbleDismissed] = useState(false);
+  const [hovering, setHovering] = useState(false);
+  const hoverTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
   // Short reactions that play on top of the chat-driven states.
   const [reaction, setReaction] = useState<"greeting" | "success" | "surprised" | null>(null);
   const reactionTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
@@ -125,16 +132,13 @@ export default function AiraChat({
 
     if (phase === "peek" && prev === "hidden") {
       playRobo();
-      let dismissed = false;
-      try {
-        dismissed = sessionStorage.getItem(BUBBLE_KEY) === "1";
-      } catch {}
-      if (!dismissed) {
-        const t = setTimeout(() => setShowBubble(true), BUBBLE_DELAY_MS);
-        return () => clearTimeout(t);
-      }
+      const t = setTimeout(() => setBubbleReady(true), BUBBLE_DELAY_MS);
+      return () => clearTimeout(t);
     }
-    if (phase === "hidden") setShowBubble(false);
+    if (phase === "hidden") {
+      setBubbleReady(false);
+      setHovering(false);
+    }
     if (phase === "arriving") playWalk();
     if (phase === "leaving") {
       playRobo();
@@ -158,7 +162,13 @@ export default function AiraChat({
     reactionTimer.current = setTimeout(() => setReaction(null), ms);
   };
 
-  useEffect(() => () => clearTimeout(reactionTimer.current), []);
+  useEffect(
+    () => () => {
+      clearTimeout(reactionTimer.current);
+      clearTimeout(hoverTimer.current);
+    },
+    [],
+  );
 
   // Wave when the chat opens.
   useEffect(() => {
@@ -188,18 +198,21 @@ export default function AiraChat({
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
-  const hideBubble = () => {
-    setShowBubble(false);
-    try {
-      sessionStorage.setItem(BUBBLE_KEY, "1");
-    } catch {}
+  const showBubble =
+    phase === "peek" && (bubbleDismissed ? hovering : bubbleReady);
+
+  /** The bubble's X: hide it for good; from now on it only shows on hover. */
+  const dismissBubble = () => {
+    setBubbleDismissed(true);
+    setHovering(false);
   };
 
-  /** Hovering the peeking robot says hi again. */
-  const sayHi = () => {
+  /** Hovering the peeking robot (or its bubble) says hi. */
+  const onHoverStart = () => {
+    clearTimeout(hoverTimer.current);
     if (phase !== "peek") return;
     if (!showBubble) react("surprised", SURPRISE_MS);
-    setShowBubble(true);
+    setHovering(true);
     const now = Date.now();
     if (now - lastHoverSound.current > HOVER_SOUND_COOLDOWN_MS) {
       lastHoverSound.current = now;
@@ -207,8 +220,13 @@ export default function AiraChat({
     }
   };
 
+  const onHoverEnd = () => {
+    clearTimeout(hoverTimer.current);
+    hoverTimer.current = setTimeout(() => setHovering(false), HOVER_HIDE_DELAY_MS);
+  };
+
   const openChat = () => {
-    hideBubble();
+    setHovering(false);
     setPhase((p) => (p === "peek" ? "arriving" : p));
   };
 
@@ -364,6 +382,8 @@ export default function AiraChat({
       {/* Peeking sits a bit higher than standing, more so on desktop. */}
       <div
         style={{ transitionDuration: `${walkMs}ms` }}
+        onMouseEnter={onHoverStart}
+        onMouseLeave={onHoverEnd}
         className={cn(
           "relative transition-transform ease-in-out",
           (phase === "hidden" || phase === "peek" || phase === "leaving") &&
@@ -376,7 +396,7 @@ export default function AiraChat({
               key="bubble"
               initial={{ opacity: 0, y: 10, scale: 0.9 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 10, scale: 0.9 }}
+              exit={{ opacity: 0, y: 10, scale: 0.9, transition: { duration: 0.2 } }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
               className="pointer-events-auto absolute right-[5rem] bottom-[2rem] z-10 origin-bottom-right md:right-[5.5rem] md:bottom-[5rem]"
             >
@@ -403,7 +423,7 @@ export default function AiraChat({
                   </button>
                   <button
                     type="button"
-                    onClick={hideBubble}
+                    onClick={dismissBubble}
                     aria-label="Dismiss"
                     className="flex size-8 items-center justify-center bg-red-500 text-white hover:bg-red-600"
                   >
@@ -418,8 +438,6 @@ export default function AiraChat({
         <motion.button
           type="button"
           onClick={toggle}
-          // Say hi again whenever the visitor hovers the peeking robot.
-          onMouseEnter={sayHi}
           disabled={walking || phase === "hidden"}
           aria-label={open ? "Close AIRA chat" : "Open AIRA chat"}
           aria-expanded={open}
