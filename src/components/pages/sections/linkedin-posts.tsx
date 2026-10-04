@@ -18,7 +18,7 @@ const LinkedInPosts = () => {
         Recent posts and updates from LinkedIn.
       </p>
 
-      <div className="grid items-start gap-6 px-4 py-8 md:grid-cols-2 md:px-12 xl:grid-cols-3">
+      <div className="grid items-start gap-6 px-4 py-8 md:grid-cols-2 md:px-12 xl:grid-cols-4">
         {linkedinPosts.map((post, i) => (
           <PostCard key={post.url} post={post} index={i} />
         ))}

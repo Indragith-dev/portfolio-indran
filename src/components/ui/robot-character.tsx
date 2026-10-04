@@ -13,6 +13,7 @@ export type RobotState =
   | "success"
   | "surprised"
   | "walking"
+  | "running"
   | "sad";
 
 const SRC = "/robot-2d.webp";
@@ -102,6 +103,17 @@ const POSES: Record<
       right: { animate: { rotate: [16, -16, 16] }, transition: loop(0.6) },
     },
   },
+  // Running: quick strides and big arm swings, leaning into it.
+  running: {
+    whole: { animate: { y: ["0%", "-6%", "0%"], rotate: 6 }, transition: { y: loop(0.22), rotate: { duration: 0.2 } } },
+    head: { animate: { rotate: [-4, 4, -4] }, transition: loop(0.44) },
+    leftArm: { animate: { rotate: [28, -28, 28] }, transition: loop(0.44) },
+    rightArm: { animate: { rotate: [-28, 28, -28] }, transition: loop(0.44) },
+    legs: {
+      left: { animate: { rotate: [-26, 26, -26] }, transition: loop(0.44) },
+      right: { animate: { rotate: [26, -26, 26] }, transition: loop(0.44) },
+    },
+  },
   // Sad to go: slumped, slow shuffle, head drooping, arms hanging.
   sad: {
     whole: { animate: { y: ["2%", "0%", "2%"] }, transition: loop(0.5) },
@@ -152,7 +164,8 @@ export function RobotCharacter({
       {/* The source has wide transparent margins; enlarge it so the robot fills the box. */}
       <motion.div
         className="absolute -inset-[38%]"
-        animate={pose.whole.animate}
+        // Only the running pose leans; every other pose stands upright.
+        animate={{ rotate: 0, ...pose.whole.animate }}
         transition={pose.whole.transition}
       >
         <Part {...PARTS.leftLeg} pose={pose.legs?.left ?? STILL} />
@@ -332,6 +345,7 @@ function Expression({ state }: { state: RobotState }) {
         </motion.div>
       );
 
+    case "running":
     case "walking":
       // Focused on where it's going.
       return <Eyes {...EYES} classes={{ container: "translate-x-1.5" }} />;

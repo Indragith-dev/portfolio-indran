@@ -27,6 +27,7 @@ import SpeechBubble from "../ui/speech-bubble";
 import { Typewriter } from "../ui/typewriter";
 import { IntroSplash } from "../shared/intro-splash";
 import { useRouter } from "next/navigation";
+import { useRouteLoader } from "@/store/use-route-loader";
 
 // dynamic imports
 const Particles = dynamic(() => import("@/components/ui/particles"), {
@@ -349,6 +350,7 @@ const HomePage = () => {
           music: () => setCurrentConsoleNavigation("music"),
           play: () => setCurrentConsoleNavigation("play"),
           portfolio: () => {
+            useRouteLoader.getState().start("/", "/portfolio");
             router.push("/portfolio");
             // setCurrentConsoleNavigation("portfolio")
           },

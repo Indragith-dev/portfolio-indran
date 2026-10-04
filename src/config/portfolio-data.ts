@@ -349,21 +349,27 @@ export const linkedinProfile = {
     "Software Developer @ MAV-S Innovations | React.js | ASP.NET Core | TypeScript | Full Stack Development",
 };
 
+/** Newest first. */
 export const linkedinPosts = [
   {
-    url: "https://www.linkedin.com/feed/update/urn:li:share:7414028215641518080/",
-    date: "Jan 2026",
-    text: `I’m happy to share that I’ve received the High Achiever Award from MAV-S Innovations.
+    url: "https://www.linkedin.com/feed/update/urn:li:ugcPost:7512478507734855680/",
+    date: "Oct 2026",
+    text: `Glad to have attended the AWS User Group Trivandrum – September Community Meetup!
 
-This recognition truly means a lot to me and motivates me to continue pushing my limits as a Software Engineer.
-I would like to extend my sincere thanks to our Founder & Lead, Minhaj Raheem, for his constant guidance, trust, and support. Working under such leadership has been a great learning experience and has helped me grow both professionally and personally. I’m also grateful to my Manager, Ajesh Anand, for his continuous support, mentorship, and encouragement, which have played a key role in this achievement.
+It was a great opportunity to connect with people from the cloud and technology community, exchange ideas, and learn more about the AWS ecosystem.
 
-A big thank you to my team as well—this wouldn’t have been possible without the collaborative and supportive environment at MAV-S Innovations.
+The session on AWS Bedrock Agent Core was especially interesting, particularly in understanding how AI agents can move beyond experimentation and towards more production-ready systems.
 
-Looking forward to achieving many more milestones together.`,
-    tags: ["HighAchieverAward", "MAVSInnovations", "SoftwareEngineer", "TeamWork"],
-    image: "/gallery/linkedin-award.jpg",
-    imageAlt: "Indragith receiving the High Achiever Award at MAV-S Innovations",
+I also found the session on Databases on AWS very useful, as it gave me a better understanding of the different database options available in AWS and their role in building scalable applications.
+
+As I continue exploring AWS, cloud technologies, AI, and Gen AI, meetups like these are a great way to gain practical insights and learn from the wider technology community.
+
+The networking and conversations with fellow developers and technology enthusiasts made the experience even more valuable.
+
+Looking forward to attending more community meetups and continuing to learn.`,
+    tags: ["AWS", "AWSUserGroup", "AWSBedrock", "GenAI"],
+    image: "/gallery/linkedin-aws-meetup.jpg",
+    imageAlt: "Indragith at the AWS User Group Trivandrum September community meetup",
   },
   {
     url: "https://www.linkedin.com/feed/update/urn:li:ugcPost:7480694445533745152/",
@@ -408,6 +414,21 @@ Always learning, always improving, and always looking forward to building impact
     tags: ["Agile", "Scrum", "PlanningPoker", "FullStackDeveloper"],
     image: "/gallery/linkedin-agile.jpg",
     imageAlt: "Agile Planning Poker cards held up in front of the MAV-S Innovations sign",
+  },
+  {
+    url: "https://www.linkedin.com/feed/update/urn:li:share:7414028215641518080/",
+    date: "Jan 2026",
+    text: `I’m happy to share that I’ve received the High Achiever Award from MAV-S Innovations.
+
+This recognition truly means a lot to me and motivates me to continue pushing my limits as a Software Engineer.
+I would like to extend my sincere thanks to our Founder & Lead, Minhaj Raheem, for his constant guidance, trust, and support. Working under such leadership has been a great learning experience and has helped me grow both professionally and personally. I’m also grateful to my Manager, Ajesh Anand, for his continuous support, mentorship, and encouragement, which have played a key role in this achievement.
+
+A big thank you to my team as well—this wouldn’t have been possible without the collaborative and supportive environment at MAV-S Innovations.
+
+Looking forward to achieving many more milestones together.`,
+    tags: ["HighAchieverAward", "MAVSInnovations", "SoftwareEngineer", "TeamWork"],
+    image: "/gallery/linkedin-award.jpg",
+    imageAlt: "Indragith receiving the High Achiever Award at MAV-S Innovations",
   },
 ];
 
