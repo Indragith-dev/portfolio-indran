@@ -1,14 +1,17 @@
 /**
  * AIRA client config and the page actions AIRA can trigger.
  *
- * The backend lives in a separate project (aira-api). Set its URL in
- * NEXT_PUBLIC_AIRA_URL, e.g. https://aira-api.vercel.app (no trailing slash).
+ * The backend lives in a separate project (aira-api). NEXT_PUBLIC_AIRA_URL
+ * overrides its URL (no trailing slash). It is read at build time, so when it
+ * is missing from a deploy we fall back to the production backend instead of
+ * calling /api/chat on the portfolio itself, which doesn't exist.
  */
 
-export const AIRA_URL = (process.env.NEXT_PUBLIC_AIRA_URL ?? "").replace(
-  /\/$/,
-  "",
-);
+const DEFAULT_AIRA_URL = "https://aira-api.vercel.app";
+
+export const AIRA_URL = (
+  process.env.NEXT_PUBLIC_AIRA_URL || DEFAULT_AIRA_URL
+).replace(/\/$/, "");
 
 export type AiraAction = { name: string; args: Record<string, unknown> };
 
