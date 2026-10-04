@@ -26,7 +26,6 @@ const PROJECT_TARGETS: Record<string, string | null> = {
   dms: "dms",
   isop: "isop",
   axiom: "axiom",
-  grn: "grn",
   hrms: "hrms",
 };
 

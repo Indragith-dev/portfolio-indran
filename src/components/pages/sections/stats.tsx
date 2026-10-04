@@ -440,6 +440,8 @@ const ActivityContent = ({ data }: { data?: GitHubStatsResponse }) => {
   const contributionData =
     data?.contributionsCollection.contributionCalendar.weeks
       .flatMap((week) => week.contributionDays)
+      // The calendar runs to Dec 31; only count days up to today.
+      .filter((day) => day.date <= dayjs().format("YYYY-MM-DD"))
       .slice(-30)
       .map((day, index) => ({
         day: index + 1,

@@ -6,8 +6,6 @@
  *  Nothing in this project calls an external API any more. Every number, name,
  *  link and paragraph the site renders is read from this file, so changing the
  *  values below is all it takes to update the portfolio.
- *
- *  Anything marked TODO is a placeholder — I did not have that detail.
  */
 
 import type { GitHubStatsResponse } from "@/types/github";
@@ -63,8 +61,6 @@ export const social = {
   email: "nsindragith@gmail.com",
   /** WhatsApp chat link, shown in the footer. */
   whatsapp: "https://wa.me/919747770467",
-  /** TODO */
-  discord: "",
 } as const;
 
 /* ── Hero counters ────────────────────────────────────────────────────────── */
@@ -91,7 +87,7 @@ export const aboutParagraphs = [
   },
   {
     before:
-      "25+ projects in, most of my work is enterprise software: document management, invoice automation, HR portals and multi-tenant platforms",
+      "25+ projects in, most of my work is enterprise software: document management, HR portals, subscription and multi-tenant platforms",
     gif: "/gifs/kawaii%20cat%20GIF.gif",
     gifAlt: "kawaii cat cheering",
     after: "— the kind with real workflows, real approvals and real users.",
@@ -281,35 +277,6 @@ export const projects: Project[] = [
     status: "in progress",
   },
   {
-    id: "grn",
-    title: "GRN — Invoice Management System",
-    summary:
-      "Pulls invoices from email, parses and analyses them, cross-verifies the data against Oracle and routes them through approval to payment. Being built independently.",
-    overview:
-      "GRN automates invoice handling. Invoices that arrive by email are picked up, parsed and analysed, then checked against data in Oracle before an approval workflow routes them through to payment.",
-    role: "Building it independently on .NET and React using Clean Architecture.",
-    highlights: [
-      "Pulls invoices straight from email",
-      "Parses and analyses invoice data automatically",
-      "Cross-verifies invoice data against Oracle",
-      "Approval workflow that routes verified invoices through to payment",
-      "Clean Architecture on .NET with PostgreSQL",
-    ],
-    stack: [
-      ".NET",
-      "C#",
-      "React",
-      "PostgreSQL",
-      "Oracle",
-      "Clean Architecture",
-    ],
-    tags: ["Automation", ".NET", "React", "PostgreSQL"],
-    image: "/projects/grn.svg",
-    company: "MAV-S Innovations",
-    date: "2026",
-    status: "in progress",
-  },
-  {
     id: "hrms",
     title: "Employee Portal & HRMS",
     summary:
@@ -343,7 +310,6 @@ export const tagColors: Record<string, string> = {
   Flutter: "bg-sky-500/10 text-sky-600 border-sky-500/30",
   Mobile: "bg-pink-500/10 text-pink-600 border-pink-500/30",
   SaaS: "bg-violet-500/10 text-violet-600 border-violet-500/30",
-  Automation: "bg-amber-500/10 text-amber-600 border-amber-500/30",
   AI: "bg-fuchsia-500/10 text-fuchsia-600 border-fuchsia-500/30",
   TypeScript: "bg-blue-500/10 text-blue-500 border-blue-500/30",
   "Next.js": "bg-zinc-500/10 text-zinc-500 border-zinc-500/30",
@@ -519,37 +485,31 @@ export const techStack = {
 /* ── Stats section ────────────────────────────────────────────────────────── */
 
 /**
- * The GitHub GraphQL API integration was removed, so these are plain numbers
- * you type in yourself.
- *
- * Repos/stars/forks/followers/languages below are pulled from the public
- * GitHub REST API for Indragith-dev (api.github.com/users/Indragith-dev and
- * .../repos, language bytes summed per repo).
- *
- * TODO: contributions, streaks, best-day commits, PR and issue counts aren't
- * available from the public REST API — they need GitHub's authenticated
- * GraphQL API (contributionsCollection). Fill these in from your GitHub
- * profile's contribution graph, or wire up a GraphQL call with a personal
- * access token if you want them to stay live.
+ * Snapshot of public GitHub data for Indragith-dev, taken 4 Oct 2026 from the
+ * GitHub REST API (repos, followers, languages, pull requests) and the public
+ * contribution calendar (github.com/users/Indragith-dev/contributions).
+ * Contribution numbers cover the 12 months up to that date. To refresh, copy
+ * the new numbers and the non-zero days from those two sources.
  */
 export const githubSummary = {
   joinYear: 2023,
-  totalRepositories: 15,
+  totalRepositories: 16,
   totalStars: 0,
-  contributions: 0,
+  contributions: 69,
   followers: 2,
-  currentStreak: 0,
-  longestStreak: 0,
-  bestDayCommits: 0,
-  originalRepos: 15,
+  currentStreak: 2,
+  longestStreak: 3,
+  bestDayCommits: 28,
+  bestDayDate: "2026-10-04",
+  originalRepos: 16,
   forkedRepos: 0,
-  pullRequests: { open: 0, closed: 0, merged: 0 },
+  pullRequests: { open: 0, closed: 0, merged: 9 },
   issues: { open: 0, closed: 0 },
-  /** Weekly deltas shown as the small green "+n" next to each counter. */
+  /** Last 7 days, shown as the small green "+n" next to each counter. */
   weeklyTrends: {
     repositories: 0,
     stars: 0,
-    contributions: 0,
+    contributions: 29,
     pullRequests: 0,
   },
   topLanguages: [
@@ -561,11 +521,31 @@ export const githubSummary = {
   ],
 } as const;
 
-/**
- * Builds a contribution calendar for `year` so the heatmap and the 30-day chart
- * have a real shape to render. Replace the zeros with your own counts if you
- * want the grid to show activity.
- */
+/** Days with contributions in the snapshot above (date: count); all others are 0. */
+export const contributionDays: Record<string, number> = {
+  "2025-10-26": 2,
+  "2025-10-27": 10,
+  "2025-10-28": 4,
+  "2025-10-31": 2,
+  "2025-11-01": 2,
+  "2026-01-19": 1,
+  "2026-01-20": 3,
+  "2026-06-28": 2,
+  "2026-07-14": 1,
+  "2026-09-16": 2,
+  "2026-09-17": 11,
+  "2026-10-03": 1,
+  "2026-10-04": 28,
+};
+
+/** GitHub-style shade (0–4) for a day's count, relative to the busiest day. */
+function contributionLevel(count: number) {
+  if (count === 0) return 0;
+  const ratio = count / githubSummary.bestDayCommits;
+  return ratio > 0.75 ? 4 : ratio > 0.5 ? 3 : ratio > 0.25 ? 2 : 1;
+}
+
+/** Builds the heatmap for `year` from `contributionDays`. */
 export function buildContributionCalendar(year: number) {
   const colors = ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"];
   const start = new Date(Date.UTC(year, 0, 1));
@@ -576,19 +556,21 @@ export function buildContributionCalendar(year: number) {
   const cursor = new Date(start);
 
   while (cursor.getUTCFullYear() <= year) {
-    const contributionDays = [];
+    const days = [];
     const firstDay = cursor.toISOString().slice(0, 10);
 
     for (let d = 0; d < 7; d++) {
-      contributionDays.push({
-        color: colors[0],
-        contributionCount: 0,
-        date: cursor.toISOString().slice(0, 10),
+      const date = cursor.toISOString().slice(0, 10);
+      const count = contributionDays[date] ?? 0;
+      days.push({
+        color: colors[contributionLevel(count)],
+        contributionCount: count,
+        date,
       });
       cursor.setUTCDate(cursor.getUTCDate() + 1);
     }
 
-    weeks.push({ contributionDays, firstDay });
+    weeks.push({ contributionDays: days, firstDay });
     if (cursor.getUTCFullYear() > year) break;
   }
 
@@ -602,7 +584,9 @@ export function buildContributionCalendar(year: number) {
 
   return {
     colors,
-    totalContributions: githubSummary.contributions,
+    totalContributions: Object.entries(contributionDays)
+      .filter(([date]) => date.startsWith(`${year}-`))
+      .reduce((sum, [, count]) => sum + count, 0),
     months,
     weeks,
   };
@@ -635,7 +619,7 @@ export function getGitHubStats(year: number): GitHubStatsResponse {
     currentStreak: s.currentStreak,
     longestStreak: s.longestStreak,
     highestCommitDay: {
-      date: new Date().toISOString().slice(0, 10),
+      date: s.bestDayDate,
       count: s.bestDayCommits,
     },
     repositories: {
@@ -655,10 +639,9 @@ export function getGitHubStats(year: number): GitHubStatsResponse {
 /* ── Testimonials ─────────────────────────────────────────────────────────── */
 
 /**
- * Colleagues who can vouch for my work. Paste each person's approved words
- * into `quote` (their own wording, or a draft from testimonial-requests.md
- * that they have read and OK'd). Only entries with a quote are shown; until
- * the first one is filled in, the section keeps the placeholder cards below.
+ * Colleagues who vouch for my work, in their own approved words. Only
+ * entries with a quote are shown, so add someone with `quote: ""` and fill
+ * it in once they've OK'd the wording.
  */
 export const colleagues: {
   name: string;
@@ -752,76 +735,73 @@ export const colleagues: {
     quote:
       "Indragith is responsive and thorough. He makes issues easy to reproduce and verify, and he never ships a fix without making sure it actually works.",
   },
-];
-
-type TestimonialItem = { testimonial: string; by: string; photo?: string };
-
-/** Shown only until a colleague's quote is added. Not real endorsements. */
-const placeholderTestimonials: TestimonialItem[] = [
   {
-    testimonial: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    by: "Placeholder Name, Role at Company",
-  },
-  {
-    testimonial: "Sed do eiusmod tempor incididunt ut labore et dolore magna.",
-    by: "Placeholder Name, Role at Company",
-  },
-  {
-    testimonial: "Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
-    by: "Placeholder Name, Role at Company",
-  },
-  {
-    testimonial:
-      "Duis aute irure dolor in reprehenderit in voluptate velit esse.",
-    by: "Placeholder Name, Role at Company",
-  },
-  {
-    testimonial:
-      "Excepteur sint occaecat cupidatat non proident, sunt in culpa.",
-    by: "Placeholder Name, Role at Company",
-  },
-  {
-    testimonial: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur.",
-    by: "Placeholder Name, Role at Company",
-  },
-  {
-    testimonial: "Neque porro quisquam est qui dolorem ipsum quia dolor sit.",
-    by: "Placeholder Name, Role at Company",
-  },
-  {
-    testimonial: "At vero eos et accusamus et iusto odio dignissimos ducimus.",
-    by: "Placeholder Name, Role at Company",
+    name: "Amritha ML",
+    role: "Backend Engineer",
+    company: "MAV-S Innovations",
+    quote:
+      "Indragith is a reliable backend teammate. He designs clear, well-structured APIs, thinks about data and edge cases up front, and is always willing to pair up and talk through a tricky problem until it's solved properly.",
   },
 ];
 
-const approvedTestimonials: TestimonialItem[] = colleagues
+export const testimonials = colleagues
   .filter((c) => c.quote.trim())
-  .map((c) => ({
+  .map((c, i) => ({
     testimonial: c.quote.trim(),
     by: `${c.name}, ${c.role} at ${c.company}`,
-    photo: c.photo,
+    tempId: i,
+    imgSrc: c.photo || "/profile.svg",
   }));
-
-export const testimonials = (
-  approvedTestimonials.length ? approvedTestimonials : placeholderTestimonials
-).map((t, i) => ({
-  testimonial: t.testimonial,
-  by: t.by,
-  tempId: i,
-  imgSrc: t.photo || "/profile.svg",
-}));
 
 /* ── Music player ─────────────────────────────────────────────────────────── */
 
 /**
- * The playlist used to be fetched from /data/playlist.json — it is a plain
- * import now.
+ * Copyright-free tracks from NoCopyrightSounds (NCS), streamed from YouTube's
+ * embedded player rather than hosted here. To add one, use a YouTube video
+ * that allows embedding; the cover is its thumbnail at
+ * https://i.ytimg.com/vi/<video id>/hqdefault.jpg.
  */
 export const playlist: Song[] = [
   {
-    url: "/music/Sunflower.mp3",
-    cover: "/data/track-cover.svg",
-    title: "Sunflower",
-    channel: "Post Malone, Swae Lee",
+    url: "https://www.youtube.com/watch?v=K4DyBUG242c",
+    cover: "https://i.ytimg.com/vi/K4DyBUG242c/hqdefault.jpg",
+    title: "On & On (feat. Daniel Levi)",
+    channel: "Cartoon, Jéja · NCS",
+  },
+  {
+    url: "https://www.youtube.com/watch?v=3nQNiWdeH2Q",
+    cover: "https://i.ytimg.com/vi/3nQNiWdeH2Q/hqdefault.jpg",
+    title: "Heroes Tonight (feat. Johnning)",
+    channel: "Janji · NCS",
+  },
+  {
+    url: "https://www.youtube.com/watch?v=jK2aIUmmdP4",
+    cover: "https://i.ytimg.com/vi/jK2aIUmmdP4/hqdefault.jpg",
+    title: "My Heart",
+    channel: "Different Heaven & EH!DE · NCS",
+  },
+  {
+    url: "https://www.youtube.com/watch?v=TW9d8vYrVFQ",
+    cover: "https://i.ytimg.com/vi/TW9d8vYrVFQ/hqdefault.jpg",
+    title: "Sky High",
+    channel: "Elektronomia · NCS",
+  },
+  {
+    url: "https://www.youtube.com/watch?v=p7ZsBPK656s",
+    cover: "https://i.ytimg.com/vi/p7ZsBPK656s/hqdefault.jpg",
+    title: "Blank",
+    channel: "Disfigure · NCS",
+  },
+  {
+    url: "https://www.youtube.com/watch?v=__CRWE-L45k",
+    cover: "https://i.ytimg.com/vi/__CRWE-L45k/hqdefault.jpg",
+    title: "Symbolism",
+    channel: "Electro-Light · NCS",
+  },
+  {
+    url: "https://www.youtube.com/watch?v=J2X5mJ3HDYE",
+    cover: "https://i.ytimg.com/vi/J2X5mJ3HDYE/hqdefault.jpg",
+    title: "Invincible",
+    channel: "DEAF KEV · NCS",
   },
 ];

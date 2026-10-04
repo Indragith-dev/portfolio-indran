@@ -37,7 +37,59 @@ export const AudioOnlyPlayer: React.FC<AudioOnlyPlayerProps> = ({
   );
 };
 
-const MusicPlayer: React.FC<MusicPlayerProps> = ({
+const isYouTube = (url: string) => /(^|\.)(youtube\.com|youtu\.be)\//.test(url);
+
+/**
+ * YouTube tracks play in YouTube's own embedded player. YouTube requires that
+ * player to stay visible (at least 200x200) with nothing drawn over it, so it
+ * replaces the album art instead of playing hidden like the audio files do.
+ */
+const YouTubeScreen: React.FC<MusicPlayerProps> = ({
+  src,
+  coverImage,
+  trackTitle,
+  artist,
+  className,
+  isPlaying,
+}) => (
+  <div
+    className={cn(
+      "relative flex h-full w-full flex-col items-center justify-center gap-0.5 overflow-hidden",
+      className,
+    )}
+  >
+    {coverImage && (
+      <img
+        src={coverImage}
+        alt=""
+        aria-hidden
+        className="absolute inset-0 size-full scale-110 object-cover blur-md brightness-[0.35]"
+      />
+    )}
+    <div className="relative z-10 h-[200px] w-[356px] max-w-full shrink-0 overflow-hidden rounded-lg bg-black shadow-2xl">
+      <ReactPlayer
+        src={src}
+        playing={isPlaying}
+        width="100%"
+        height="100%"
+        controls={false}
+        playsInline
+      />
+    </div>
+    <p className="relative z-10 w-[356px] max-w-full shrink-0 truncate text-center text-[11px] leading-[14px] text-white">
+      <span className="font-semibold">{trackTitle}</span>
+      <span className="text-white/70"> · {artist}</span>
+    </p>
+  </div>
+);
+
+const MusicPlayer: React.FC<MusicPlayerProps> = (props) => {
+  if (isYouTube(props.src)) return <YouTubeScreen {...props} />;
+  return <AudioFilePlayer {...props} />;
+};
+
+/** Self-hosted audio files: album art, spinning vinyl and a hidden player. */
+const AudioFilePlayer: React.FC<MusicPlayerProps> = ({
   src,
   coverImage,
   trackTitle = "Track Title",

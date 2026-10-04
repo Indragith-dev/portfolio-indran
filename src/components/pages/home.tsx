@@ -394,7 +394,6 @@ const HomePage = () => {
         />
       ),
       play: <SnakeGame ref={snakeRef} className="absolute inset-0" />,
-      // TODO
       portfolio: <IntroSplash />,
       main: (
         <MainScreen
